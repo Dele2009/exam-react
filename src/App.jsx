@@ -11,15 +11,15 @@ import Navroot from './components/navigation/rootlayouts/navroot'
 import Dashboard from './components/navigation/adminDashNav';
 
 import Heropage from './components/pages/introViews/hero'
-import CreateExam from './components/pages/introViews/createExam';
 import Login from './components/pages/introViews/login';
 
 
 import Overview from './components/pages/dashboardViews/overview';
-import {StudentForm, TeacherForm, AdminForm} from './components/pages/dashboardViews/UserRegister';
+import { AdminForm, StudentForm, TeacherForm } from './components/pages/dashboardViews/UserRegister';
 
 
 import './index.css';
+import CreateExam from './components/pages/dashboardViews/createExam';
 
 function App() {
   return (
@@ -29,22 +29,17 @@ function App() {
         <Routes>
 
           <Route path='/' element={<Navroot />}>
-
-
             <Route path="/" element={<Heropage />} />
             <Route path="/login" element={<Login />} />
-
-            <Route path="/exams/create" element={<CreateExam />} />
-
-
+            {/* <Route path="/exams/create" element={<CreateExam />} /> */}
           </Route>
 
-          <Route path='/Dashboard' element={<Dashboard/>}>
-             <Route path='' element={<Overview/>}/>
-             <Route path='newuser/admin' element={<AdminForm/>}/>
-             <Route path='newuser/teacher' element={<TeacherForm/>}/>
-             <Route path='newuser/student' element={<StudentForm/>}/>
-
+          <Route path='/Dashboard' element={<Dashboard />}>
+            <Route path='' element={<Overview />} />
+            <Route path='newuser/admin' element={<AdminForm/>} />
+            <Route path='newuser/teacher' element={<TeacherForm />} />
+            <Route path='newuser/student' element={<StudentForm />} />
+            <Route path='exams/create' element={<CreateExam/>} />
           </Route>
 
         </Routes>
