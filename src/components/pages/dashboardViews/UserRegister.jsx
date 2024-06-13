@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from '../../../utilities/axios'
+import MultiSelect from '../../fcntionComps/multiselect';
 
 async function submitToServer(formData, url) {
     const data = await axios.post(url, formData, {
@@ -83,9 +84,24 @@ export const StudentForm = () => {
                                 <label htmlFor="studentId" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Student ID</label>
                             </div>
                             <div className="relative">
-                                <input type="text" id="gradeLevel" name="gradeLevel" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
+                                <select id="gradeLevel" name="gradeLevel" value={''} className="peer border p-2 rounded w-full bg-white" onChange={handleChange}>
+                                    <option value="" selected >---select Level---</option>
+                                    <option value="grade1">Grade 1</option>
+                                    <option value="grade2">Grade 2</option>
+                                    <option value="grade3">Grade 3</option>
+                                    <option value="grade4">Grade 4</option>
+                                    <option value="grade5">Grade 5</option>
+                                    <option value="grade6">Grade 6</option>
+                                    <option value="grade7">Grade 7</option>
+                                    <option value="grade8">Grade 8</option>
+                                    <option value="grade9">Grade 9</option>
+                                    <option value="grade10">Grade 10</option>
+                                    <option value="grade11">Grade 11</option>
+                                    <option value="grade12">Grade 12</option>
+                                </select>
                                 <label htmlFor="gradeLevel" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Grade Level</label>
                             </div>
+
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
                             <div className="relative">
@@ -287,7 +303,7 @@ export const AdminForm = () => {
         profilePicture: null,
         role: '',
         department: '',
-        permissions: '',
+        permissions: [],
         dataType: 'user'
     });
 
@@ -300,13 +316,21 @@ export const AdminForm = () => {
         setAdminFormData({ ...adminFormData, [e.target.name]: e.target.files[0] });
     };
 
+    const handleMultiSelectChange = (selectedOptions) => {
+        setAdminFormData({ ...adminFormData, permissions: selectedOptions });
+    };
+
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         Object.keys(adminFormData).forEach((key) => {
-            formData.append(key, adminFormData[key]);
+            if (key === 'permissions') {
+                formData.append(key, JSON.stringify(adminFormData[key].map(option => option.value)));
+            } else {
+                formData.append(key, adminFormData[key]);
+            }
         });
 
         try {
@@ -324,7 +348,7 @@ export const AdminForm = () => {
                     profilePicture: null,
                     role: '',
                     department: '',
-                    permissions: '',
+                    permissions: [],
                     dataType: 'user'
                 })
             }
@@ -333,6 +357,12 @@ export const AdminForm = () => {
             console.error(err);
         }
     };
+
+    const permissionsOptions = [
+        { value: 'read', label: 'Read' },
+        { value: 'write', label: 'Write' },
+        { value: 'delete', label: 'Delete' }
+    ];
 
     return (
         <div className="bg-gray-100 transition-colors duration-300">
@@ -397,8 +427,8 @@ export const AdminForm = () => {
                                 <label htmlFor="department" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Department</label>
                             </div>
                             <div className="relative">
-                                <input type="text" id="permissions" name="permissions" value={adminFormData.permissions} className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
-                                <label htmlFor="permissions" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Permissions</label>
+                                <label htmlFor="permissions" className="text-gray-500">Permissions</label>
+                                <MultiSelect options={permissionsOptions} onChange={handleMultiSelectChange} />
                             </div>
 
                             {/* <input type="text" value={adminFormData.dataType} onChange={handleChange} className='hidden'/> */}
