@@ -23,7 +23,7 @@ import CreateExam from './components/pages/dashboardViews/createExam';
 
 function App() {
   return (
-    <div className=" mx-auto py-4">
+    <div className=" mx-auto pb-4">
 
       <Router>
         <Routes>

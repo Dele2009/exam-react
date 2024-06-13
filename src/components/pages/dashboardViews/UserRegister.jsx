@@ -84,7 +84,7 @@ export const StudentForm = () => {
                                 <label htmlFor="studentId" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Student ID</label>
                             </div>
                             <div className="relative">
-                                <select id="gradeLevel" name="gradeLevel" value={''} className="peer border p-2 rounded w-full bg-white" onChange={handleChange}>
+                                <select id="gradeLevel" name="gradeLevel"  value={''} className="peer border p-2 rounded w-full bg-white" onChange={handleChange}>
                                     <option value="" selected >---select Level---</option>
                                     <option value="grade1">Grade 1</option>
                                     <option value="grade2">Grade 2</option>
