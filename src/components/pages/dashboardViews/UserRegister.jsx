@@ -13,16 +13,70 @@ async function submitToServer(formData, url) {
 }
 
 export const StudentForm = () => {
-    const [studentFormData, setStudentFormData] = useState({});
+    const [studentFormData, setStudentFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        username: '',
+        phone: '',
+        password: '',
+        dob: '',
+        address: '',
+        studentId: '',
+        gradeLevel: '',
+        parentName: '',
+        parentContact: '',
+        enrollmentDate: '',
+        coursesEnrolled: '',
+        emergencyContact: '',
+
+    });
 
     const handleChange = (e) => {
         const { name, value } = e.target
         setStudentFormData({ ...studentFormData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleFileChange = (e) => {
+        setStudentFormData({ ...studentFormData, profilePicture: e.target.files[0] });
+        console.log()
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission logic here
+        studentFormData[firstName] = 'maxmadman'
+        console.log(studentFormData[firstName])
+        console.log(studentFormData.firstName)
+        const formData = new FormData();
+        Object.keys(studentFormData).forEach((key) => {
+            formData.append(key, studentFormData[key]);
+        });
+
+        try {
+            const response = await submitToServer(formData, '/auth/student')
+            if (response.status >= 200)
+                setStudentFormData({
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    username: '',
+                    phone: '',
+                    password: '',
+                    dob: '',
+                    address: '',
+                    studentId: '',
+                    gradeLevel: '',
+                    parentName: '',
+                    parentContact: '',
+                    enrollmentDate: '',
+                    coursesEnrolled: '',
+                    emergencyContact: '',
+            
+                })
+            console.log('teacher created:', response);
+        } catch (err) {
+            console.error(err);
+        }
         console.log(studentFormData);
     };
 
@@ -36,55 +90,55 @@ export const StudentForm = () => {
                         {/* Common Fields */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
                             <div className="relative">
-                                <input type="text" id="firstName" name="firstName" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
+                                <input type="text" id="firstName" value={studentFormData.firstName} name="firstName" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                                 <label htmlFor="firstName" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">First name</label>
                             </div>
                             <div className="relative">
-                                <input type="text" id="lastName" name="lastName" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
+                                <input type="text" id="lastName" value={studentFormData.lastName} name="lastName" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                                 <label htmlFor="lastName" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Last name</label>
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
                             <div className="relative">
-                                <input type="email" id="email" name="email" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
+                                <input type="email" id="email" value={studentFormData.email} name="email" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                                 <label htmlFor="email" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Email address</label>
                             </div>
                             <div className="relative">
-                                <input type="text" id="username" name="username" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
+                                <input type="text" id="username" value={studentFormData.username} name="username" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                                 <label htmlFor="username" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Username</label>
                             </div>
                             <div className="relative">
-                                <input type="tel" id="phone" name="phone" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
+                                <input type="tel" id="phone" value={studentFormData.phone} name="phone" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                                 <label htmlFor="phone" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Phone number</label>
                             </div>
                         </div>
                         <div className="relative mb-12">
-                            <input type="password" id="password" name="password" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
+                            <input type="password" id="password" value={studentFormData.password} name="password" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                             <label htmlFor="password" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Password</label>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
                             <div className="relative">
-                                <input type="date" id="dob" name="dob" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
+                                <input type="date" id="dob" value={studentFormData.dob} name="dob" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                                 <label htmlFor="dob" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Date of Birth</label>
                             </div>
                             <div className="relative">
-                                <input type="text" id="address" name="address" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
+                                <input type="text" id="address" value={studentFormData.address} name="address" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                                 <label htmlFor="address" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Address</label>
                             </div>
                         </div>
                         <div className="relative mb-12">
-                            <input type="file" id="profilePicture" name="profilePicture" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
+                            <input type="file" id="profilePicture" name="profilePicture" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleFileChange} />
                             <label htmlFor="profilePicture" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Profile Picture</label>
                         </div>
 
                         {/* Student Specific Fields */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
                             <div className="relative">
-                                <input type="text" id="studentId" name="studentId" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
+                                <input type="text" id="studentId" value={studentFormData.studentId} name="studentId" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
                                 <label htmlFor="studentId" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Student ID</label>
                             </div>
                             <div className="relative">
-                                <select id="gradeLevel" name="gradeLevel"  value={''} className="peer border p-2 rounded w-full bg-white" onChange={handleChange}>
+                                <select id="gradeLevel" value={studentFormData.gradeLevel} name="gradeLevel" className="peer border p-2 rounded w-full bg-white" onChange={handleChange}>
                                     <option value="" selected >---select Level---</option>
                                     <option value="grade1">Grade 1</option>
                                     <option value="grade2">Grade 2</option>
@@ -105,26 +159,26 @@ export const StudentForm = () => {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
                             <div className="relative">
-                                <input type="text" id="parentName" name="parentName" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
+                                <input type="text" id="parentName" value={studentFormData.parentName} name="parentName" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
                                 <label htmlFor="parentName" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Parent/Guardian Name</label>
                             </div>
                             <div className="relative">
-                                <input type="tel" id="parentContact" name="parentContact" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
+                                <input type="tel" id="parentContact" value={studentFormData.parentContact} name="parentContact" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
                                 <label htmlFor="parentContact" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Parent/Guardian Contact</label>
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
                             <div className="relative">
-                                <input type="date" id="enrollmentDate" name="enrollmentDate" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
+                                <input type="date" id="enrollmentDate" value={studentFormData.enrollmentDate} name="enrollmentDate" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
                                 <label htmlFor="enrollmentDate" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Enrollment Date</label>
                             </div>
                             <div className="relative">
-                                <input type="text" id="coursesEnrolled" name="coursesEnrolled" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
+                                <input type="text" id="coursesEnrolled" value={studentFormData.coursesEnrolled} name="coursesEnrolled" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
                                 <label htmlFor="coursesEnrolled" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Courses Enrolled</label>
                             </div>
                         </div>
                         <div className="relative mb-12">
-                            <input type="tel" id="emergencyContact" name="emergencyContact" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
+                            <input type="tel" id="emergencyContact" value={studentFormData.emergencyContact} name="emergencyContact" className="peer border p-2 rounded w-full" placeholder=" " onChange={handleChange} />
                             <label htmlFor="emergencyContact" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Emergency Contact Information</label>
                         </div>
 
@@ -162,7 +216,7 @@ export const TeacherForm = () => {
     };
 
     const handleFileChange = (e) => {
-        setAdminFormData({ ...teacherFormData, profilePicture: e.target.files[0] });
+        setTeacherFormData({ ...teacherFormData, profilePicture: e.target.files[0] });
     };
 
 
