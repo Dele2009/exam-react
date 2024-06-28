@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, Link } from "react-router-dom";
+import { useAuthContent, useLogout } from '../../hooks'
 
 const Dashboard = () => {
     const [isAddUserCollapsed, setIsAddUserCollapsed] = useState(false);
@@ -8,6 +9,9 @@ const Dashboard = () => {
     const toggleAddUserCollapse = () => {
         setIsAddUserCollapsed(!isAddUserCollapsed);
     };
+
+    const { user } = useAuthContent()
+    const {logout} = useLogout()
 
     return (
         <div className="bg-slate-200 flex h-screen overflow-hidden">
@@ -45,45 +49,47 @@ const Dashboard = () => {
 
 
 
+                        {user && user.role === 'Admin' && (
+                            <li className="relative">
+                                <button
+                                    className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 font-semibold focus:outline-none"
+                                    onClick={toggleAddUserCollapse}>
+                                    <span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                                    </svg></span><span className="">Users</span>
+                                </button>
+                                {isAddUserCollapsed && (
+                                    <ul className="rounded-md mt-2 text-sm  space-y-2 w-full bg-slate-800 p-4">
+                                        <li className='px-2 py-2 flex items-center justify-start  text-gray-300 hover:bg-slate-600 focus:bg-slate-600 rounded-md'>
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-2">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                                                </svg>
+                                            </span>
 
-                        <li className="relative">
-                            <button
-                                className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 font-semibold focus:outline-none"
-                                onClick={toggleAddUserCollapse}>
-                                <span> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                                </svg></span><span className="">Users</span>
-                            </button>
-                            {isAddUserCollapsed && (
-                                <ul className="rounded-md mt-2 text-sm  space-y-2 w-full bg-slate-800 p-4">
-                                    <li className='px-2 py-2 flex items-center justify-start  text-gray-300 hover:bg-slate-600 focus:bg-slate-600 rounded-md'>
-                                        <span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-2">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-                                            </svg>
-                                        </span>
+                                            <Link to='newuser/admin' className=" block  ml-2">Secondary Admin</Link>
+                                        </li>
+                                        <li className='px-2 py-2 flex items-center justify-start  text-gray-300 hover:bg-slate-600 focus:bg-slate-600 rounded-md'>
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-2">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                                                </svg>
+                                            </span>
+                                            <Link to='newuser/teacher' className=" block ml-2">Teacher</Link>
+                                        </li>
+                                        <li className='px-2 py-2 flex items-center justify-start  text-gray-300 hover:bg-slate-600 focus:bg-slate-600 rounded-md'>
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-2">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                                                </svg>
+                                            </span>
+                                            <Link to='newuser/student' className=" block ml-2">Student</Link>
+                                        </li>
+                                    </ul>
+                                )}
+                            </li>
+                        )}
 
-                                        <Link to='newuser/admin' className=" block  ml-2">Secondary Admin</Link>
-                                    </li>
-                                    <li className='px-2 py-2 flex items-center justify-start  text-gray-300 hover:bg-slate-600 focus:bg-slate-600 rounded-md'>
-                                        <span>
-                                            <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-2">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-                                            </svg>
-                                        </span>
-                                        <Link to='newuser/teacher' className=" block ml-2">Teacher</Link>
-                                    </li>
-                                    <li className='px-2 py-2 flex items-center justify-start  text-gray-300 hover:bg-slate-600 focus:bg-slate-600 rounded-md'>
-                                        <span>
-                                            <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-2">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-                                            </svg>
-                                        </span>
-                                        <Link to='newuser/student' className=" block ml-2">Student</Link>
-                                    </li>
-                                </ul>
-                            )}
-                        </li>
                         {/* <li className="relative">
                             <Link to=''
                                 className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 text-gray-300 focus:outline-none">
@@ -191,14 +197,14 @@ const Dashboard = () => {
 
                         <ul className="mx-auto mt-4 flex space-x-6 sm:mx-5 sm:mt-0">
                             <li className="">
-                                <Link to=''
+                                <a onClick={logout}
                                     className="flex h-8 w-8 items-center justify-center rounded-xl border text-gray-600 hover:text-black hover:shadow">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                         stroke="currentColor" strokeWidth="2">
                                         <path strokeLinecap="round" strokeLinejoin="round"
                                             d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                </Link>
+                                </a>
                             </li>
                             <li className="">
                                 <Link to=''

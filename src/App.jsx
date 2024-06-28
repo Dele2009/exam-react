@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 // import SignupAdmin from './components/Auth/SignupAdmin';
 // import StudentDashboard from './components/Dashboard/StudentDashboard';
 // import TeacherDashboard from './components/Dashboard/TeacherDashboard';
@@ -21,7 +22,15 @@ import { AdminForm, StudentForm, TeacherForm } from './components/pages/dashboar
 import './index.css';
 import CreateExam from './components/pages/dashboardViews/createExam';
 
+import { useEffect, useState, useContext, createContext } from 'react';
+import Errorpage from './components/pages/ErrorViews/route_error';
+import { useAuthContent } from './hooks';
 function App() {
+
+  const { user } = useAuthContent()
+  useEffect(() => {
+    console.log('from the app.jsx', user, typeof user)
+  }, [user])
   return (
     <div className=" mx-auto pb-4">
 
@@ -30,17 +39,34 @@ function App() {
 
           <Route path='/' element={<Navroot />}>
             <Route path="/" element={<Heropage />} />
-            <Route path="/login" element={<Login />} />
-            {/* <Route path="/exams/create" element={<CreateExam />} /> */}
+            {/* {!user && */}
+              {/* // ( */}
+              <Route path="/login" element={<Login />} />
+            {/* // ) */}
+            {/* // } */}
+            
+
+            <Route path='*' element={<Errorpage />} />
           </Route>
 
-          <Route path='/Dashboard' element={<Dashboard />}>
-            <Route path='' element={<Overview />} />
-            <Route path='newuser/admin' element={<AdminForm/>} />
-            <Route path='newuser/teacher' element={<TeacherForm />} />
-            <Route path='newuser/student' element={<StudentForm />} />
-            <Route path='exams/create' element={<CreateExam/>} />
-          </Route>
+          {user && (user.role === 'Teacher' || user.role === 'Admin') &&
+            (<Route path='/Dashboard' element={<Dashboard />}>
+              <Route path='' element={<Overview />} />
+              {user.role === 'Admin' && (
+                <>
+                  <Route path='newuser/admin' element={<AdminForm />} />
+                  <Route path='newuser/teacher' element={<TeacherForm />} />
+                  <Route path='newuser/student' element={<StudentForm />} />
+                </>
+               )}
+
+              <Route path='exams/create' element={<CreateExam />} />
+              <Route path='*' element={<Errorpage />} />
+
+            </Route>)
+          }
+
+
 
         </Routes>
 

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 
-const MultiSelect = ({ options, onChange }) => {
+const MultiSelect = ({ id, name, value, options, onChange }) => {
     const animatedComponents = makeAnimated();
 
     const customStyles = {
-        control: (provided) => ({
+        control: (provided, state) => ({
             ...provided,
-            borderColor: '#d1d5db',
+            borderColor: state.isFocused ? '#3b82f6' : '#d1d5db',
             padding: '0.5rem',
             borderRadius: '0.375rem',
             '&:hover': { borderColor: '#9ca3af' },
@@ -32,15 +32,29 @@ const MultiSelect = ({ options, onChange }) => {
     };
 
     return (
-        <Select
-            closeMenuOnSelect={false}
-            components={animatedComponents}
-            isMulti
-            options={options}
-            styles={customStyles}
-            onChange={onChange}
-            className="w-full"
-        />
+        <div className="relative">
+            <Select
+                id={id}
+                name={name}
+                value={value}
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                isMulti
+                options={options}
+                styles={customStyles}
+                onChange={onChange}
+                className="w-full"
+                classNamePrefix="react-select"
+            />
+            <label
+                htmlFor={id}
+                className={`absolute left-2 top-2 text-gray-500 duration-300 transform scale-75 origin-top-left 
+                ${value && value.length ? '-translate-y-6' : 'peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100'} 
+                peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-75`}
+            >
+                {name.charAt(0).toUpperCase() + name.slice(1)}
+            </label>
+        </div>
     );
 };
 
