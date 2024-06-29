@@ -68,11 +68,11 @@ function App() {
             </Route>)
           }
 
-          {/* {user && user.role === 'Student' && ( */}
+          {user && user.role === 'Student' && (
             <Route path='/Students' element={<NavBar/>}>
               <Route path='' element={<StudentExam/>}/>
             </Route>
-          {/* )} */}
+          )}
 
 
 
