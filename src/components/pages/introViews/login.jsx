@@ -40,11 +40,11 @@ const Login = () => {
                 setTimeout(() => {
                     navigate('/Dashboard');
 
-                }, 8000)
+                }, 5000)
             } else {
                 setTimeout(() => {
-                    navigate('/');
-                }, 8000)
+                    navigate('/Students');
+                }, 5000)
             }
         } catch (e) {
             console.error(e);

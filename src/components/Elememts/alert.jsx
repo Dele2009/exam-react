@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Alert = ({ message, error, index,length,onClick }) => {
+export const Alert = ({ message, error, index,length,onClick }) => {
   // const [visible, setVisible] = useState(true);
 
   // const handleClose = () => {
@@ -70,4 +70,14 @@ const Alert = ({ message, error, index,length,onClick }) => {
   );
 };
 
-export default Alert;
+export const AlertContainer = ({children}) => {
+  return(
+    <div className="flex flex-col items-center justify-center gap-3 fixed z-50 top-5 right-4 max-h-96 overflow-y-auto backdrop-blur-2xl px-10 py-5">
+      {children}
+    </div>
+  )
+}
+
+// export const Al = {
+//   container: AlertContainer
+// }

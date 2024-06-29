@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../nav'
 
-function Navroot({children}){
+function Navroot(){
     return(
         <>
-          <Navbar children={children}/>
+          <Navbar/>
           <Outlet/>
         </>
     )

@@ -2,20 +2,50 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../../utilities/axios';
 import upload from '../../../assets/upload.svg';
 import { useAuthContent } from '../../../hooks';
-import { Alert } from '../../Elememts';
+import { Alert, AlertContainer } from '../../Elememts';
 
 const CreateExam = () => {
   const { user } = useAuthContent();
 
+  
+  const fileToDataURL = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const dataURLtoFile = (dataurl, filename) => {
+    let arr = dataurl.split(',');
+    let mime = arr[0].match(/:(.*?);/)[1];
+    let bstr = atob(arr[1]);
+    let n = bstr.length;
+    let u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  };
   const getExamState = () => {
     const Data = {
       title: '',
       subject: '',
       questions: [],
-      previews: {},
+      previews: {}
     };
     const ExamState = localStorage.getItem('ExamCreation');
     const Exam = ExamState ? JSON.parse(ExamState) : Data;
+
+    if (Exam.questions) {
+      Exam.questions = Exam.questions.map(question => {
+        if (question.image) {
+          question.image = dataURLtoFile(question.image, `question_${Date.now()}.png`);
+        }
+        return question;
+      });
+    }
 
     return Exam;
   };
@@ -27,19 +57,35 @@ const CreateExam = () => {
   const [questions, setQuestions] = useState(initialState.questions);
   const [error, setError] = useState([]);
   const [previews, setPreviews] = useState(initialState.previews);
+  const [isLoading, setIsloading] = useState(false);
 
   useEffect(() => {
-    const Exam = {
-      title,
-      subject,
-      questions,
-      previews,
+    const saveExamToLocalStorage = async () => {
+      const questionsWithDataURLs = await Promise.all(
+        questions.map(async (question) => {
+          if (question.image instanceof File) {
+            const dataURL = await fileToDataURL(question.image);
+            return { ...question, image: dataURL };
+          }
+          return question;
+        })
+      );
+
+      const Exam = {
+        title,
+        subject,
+        questions: questionsWithDataURLs,
+        previews,
+      };
+      localStorage.setItem('ExamCreation', JSON.stringify(Exam));
     };
-    localStorage.setItem('ExamCreation', JSON.stringify(Exam));
+
+    saveExamToLocalStorage();
   }, [title, subject, questions, previews]);
+
   useEffect(() => {
-    console.log(error)
-  }, [error]);
+    console.log(error,questions);
+  }, [error,questions]);
 
   const handleQuestionChange = (index, field, value) => {
     const updatedQuestions = [...questions];
@@ -53,12 +99,13 @@ const CreateExam = () => {
     setQuestions(updatedQuestions);
   };
 
-  const handleImageChange = (questionIndex, file) => {
+  const handleImageChange = async (questionIndex, file) => {
     const updatedQuestions = [...questions];
     updatedQuestions[questionIndex].image = file;
     setQuestions(updatedQuestions);
     generatePreview(questionIndex, file);
   };
+
 
   const handleImagePreview = async (data) => {
     if (data) {
@@ -85,6 +132,7 @@ const CreateExam = () => {
     setPreviews((prev) => ({ ...prev, [index]: preview }));
   };
 
+
   const isQuestionComplete = (question) => {
     return (
       question.questionText.trim() !== '' &&
@@ -96,7 +144,7 @@ const CreateExam = () => {
   const addQuestion = () => {
     if (questions.length > 0) {
       const currentQuestion = questions[questions.length - 1];
-      if(!title || !subject){
+      if (!title || !subject) {
         setError((prev) => ([...prev, { message: 'Title and subject must be include to proceed', error: true }]));
         return;
 
@@ -117,7 +165,7 @@ const CreateExam = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!title || !subject){
+    if (!title || !subject) {
       setError((prev) => ([...prev, { message: 'Title and subject must be include to proceed', error: true }]));
       return;
 
@@ -127,6 +175,8 @@ const CreateExam = () => {
       return;
     }
     try {
+
+      setIsloading(true)
       const formData = new FormData();
       formData.append('title', title);
       formData.append('subject', subject);
@@ -140,32 +190,43 @@ const CreateExam = () => {
         });
       });
 
-      const { data } = await axios.post('/exams/create', formData, {
+      const response = await axios.post('/exam/create', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Exam created:', data);
+      if(response){
+    
+      const { message, error } = response.data;
+      setError((prev) => ([...prev, { message, error }]));
+      setIsloading(false)
+
+
+      console.log('Exam created:', response);
       // Reset the form after successful submission
       setTitle('');
       setSubject('');
       setQuestions([]);
       setPreviews({});
-      setError([]);
+      }
+      // setError([]);
     } catch (err) {
-      console.error(err);
-      setError('Error creating exam. Please try again.');
+      console.log(err);
+            setIsloading(false)
+
+      setError((prev) => ([...prev, { message: 'Error creating exam. Please try again.', error: true }]))
+      // setError();
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row-reverse items-start gap-3 justify-center p-6 bg-gray-100">
       {error.length > 0 && (
-        <div className="flex flex-col items-center justify-center gap-3 fixed z-50 top-5 right-4">
+        <AlertContainer>
           {error.map((error_Obj, index) => (
             <Alert {...error_Obj} key={index} index={index} length={error.length} onClick={() => handleErrors(index)} />
           ))}
-        </div>
+        </AlertContainer>
       )}
       <form onSubmit={handleSubmit} className="bg-white z-30 p-8 rounded-lg shadow-lg w-full md:w-7/12 lg:w-8/12 mb-6">
 
@@ -201,8 +262,13 @@ const CreateExam = () => {
                     htmlFor={`questionImage${questionIndex}`}
                     className="w-full mb-6 h-48 border-2 border-dashed border-gray-300 rounded-lg flex justify-center items-center cursor-pointer overflow-hidden"
                   >
-                    <img
+                    {/* <img
                       src={previews[questionIndex] ? previews[questionIndex] : upload}
+                      alt=""
+                      className={`${previews[questionIndex] ? 'w-full h-full object-cover' : 'w-1/2 h-1/2'}`}
+                    /> */}
+                    <img
+                      src={question.image ? URL.createObjectURL(question.image) : upload}
                       alt=""
                       className={`${previews[questionIndex] ? 'w-full h-full object-cover' : 'w-1/2 h-1/2'}`}
                     />
@@ -214,13 +280,20 @@ const CreateExam = () => {
                     onChange={(e) => handleImageChange(questionIndex, e.target.files[0])}
                     className="hidden"
                   />
-                  <input
+                  <textarea
+                    placeholder="Question Text"
+                    name='questionText'
+                    value={question.questionText}
+                    onChange={(e) => handleQuestionChange(questionIndex, 'questionText', e.target.value)}
+                    className="w-full border border-gray-300 p-2 rounded-lg mb-4"
+                  />
+                  {/* <input
                     type="text"
                     value={question.questionText}
                     onChange={(e) => handleQuestionChange(questionIndex, 'questionText', e.target.value)}
                     placeholder="Question Text"
                     className="block border border-gray-300 p-3 rounded-lg w-full mb-4"
-                  />
+                  /> */}
                   <div className="grid grid-cols-2 gap-4">
                     {question.options.map((option, optionIndex) => (
                       <input
@@ -250,8 +323,8 @@ const CreateExam = () => {
           Add New Question
         </button>
         {questions.length > 0 && (
-          <button type="submit" className="w-full bg-blue-500 text-white p-3 rounded-lg">
-            Submit Exam
+          <button disabled={isLoading} type="submit" className="w-full bg-blue-500 text-white p-3 rounded-lg disabled:bg-grey-600">
+            {isLoading ? 'Submitting.......' : 'Submit Exam'}
           </button>
         )}
       </form>
@@ -265,9 +338,14 @@ const CreateExam = () => {
             <div key={questionIndex} className="mb-6 p-4 border border-gray-300 rounded-lg">
               <h2 className="text-lg font-medium text-gray-700 ">Question {questionIndex + 1}</h2>
               {previews[questionIndex] && (
+                // <img
+                //   src={previews[questionIndex]}
+                //   alt={`Question ${questionIndex + 1} Image`}
+                //   className="w-full h-48 object-cover rounded-lg mb-4"
+                // />
                 <img
-                  src={previews[questionIndex]}
-                  alt={`Question ${questionIndex + 1} Image`}
+                src={URL.createObjectURL(question.image)}
+                alt={`Question ${questionIndex + 1} Image`}
                   className="w-full h-48 object-cover rounded-lg mb-4"
                 />
               )}

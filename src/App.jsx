@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import Navbar from './components/navigation/nav';
 import Navroot from './components/navigation/rootlayouts/navroot'
 import Dashboard from './components/navigation/adminDashNav';
+import NavBar from './components/navigation/studentDashNav';
 
 import Heropage from './components/pages/introViews/hero'
 import Login from './components/pages/introViews/login';
@@ -18,6 +19,7 @@ import Login from './components/pages/introViews/login';
 import Overview from './components/pages/dashboardViews/overview';
 import { AdminForm, StudentForm, TeacherForm } from './components/pages/dashboardViews/UserRegister';
 
+import StudentExam from './components/pages/StudentViews/exam';
 
 import './index.css';
 import CreateExam from './components/pages/dashboardViews/createExam';
@@ -65,6 +67,12 @@ function App() {
 
             </Route>)
           }
+
+          {/* {user && user.role === 'Student' && ( */}
+            <Route path='/Students' element={<NavBar/>}>
+              <Route path='' element={<StudentExam/>}/>
+            </Route>
+          {/* )} */}
 
 
 
