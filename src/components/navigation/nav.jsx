@@ -74,7 +74,7 @@ const Navbar = ({ children }) => {
                         <li style={fontVarient} className="lg:mr-12">
                             <Link
                                 className="rounded ca text-slate-100 transition focus:outline-none  focus:ring-blue-700 focus:ring-offset-2"
-                                to="#"
+                                to="/Students"
                             >
                                 FAQ
                             </Link>
