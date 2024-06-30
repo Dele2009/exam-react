@@ -48,6 +48,7 @@ const Login = () => {
             }
         } catch (e) {
             console.error(e);
+            setFormValues((prev)=>({ ...prev, password: '' }));
         }
 
         //   const {data} = await axios.post('/auth/sign-in', formValues)
@@ -72,7 +73,7 @@ const Login = () => {
             <div className="z-30 py-6 px-8 h-fit mt-32 w-10/12 md:w-1/3 bg-white rounded shadow-xl">
                 <form onSubmit={HandleSubmit}>
                     <div className="mb-6">
-                        <label htmlFor="email" className="block text-gray-800 font-bold">Email / Usernsme:</label>
+                        <label htmlFor="email" className="block text-gray-800 font-bold">Email / Username:</label>
                         <input
                             type="text"
                             name="email"

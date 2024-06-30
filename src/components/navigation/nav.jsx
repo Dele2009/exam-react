@@ -6,6 +6,7 @@ import { useAuthContent, useLogout } from "../../hooks";
 const Navbar = ({ children }) => {
     const fontVarient = {
         fontVariant: "small-caps",
+        fontWeight: "700"
     };
     const { user } = useAuthContent()
     const { logout } = useLogout()
@@ -49,7 +50,7 @@ const Navbar = ({ children }) => {
                     <ul className="flex w-full flex-col items-center space-y-2 lg:flex-row lg:justify-center lg:space-y-0">
                         <li style={fontVarient} className="lg:mr-12">
                             <Link
-                                className="rounded ca  text-slate-950 transition focus:outline-none  focus:ring-blue-700 focus:ring-offset-2"
+                                className="rounded ca  text-slate-700 transition focus:outline-none  focus:ring-blue-700 focus:ring-offset-2"
                                 to="#"
                             >
                                 Components
@@ -57,7 +58,7 @@ const Navbar = ({ children }) => {
                         </li>
                         <li style={fontVarient} className="lg:mr-12">
                             <Link
-                                className="rounded ca text-slate-950 transition focus:outline-none  focus:ring-blue-700 focus:ring-offset-2"
+                                className="rounded ca text-slate-700 transition focus:outline-none  focus:ring-blue-700 focus:ring-offset-2"
                                 to="#"
                             >
                                 Pricing
@@ -65,7 +66,7 @@ const Navbar = ({ children }) => {
                         </li>
                         <li style={fontVarient} className="lg:mr-12">
                             <Link
-                                className="rounded ca text-slate-950 transition focus:outline-none  focus:ring-blue-700 focus:ring-offset-2"
+                                className="rounded ca text-slate-700 transition focus:outline-none  focus:ring-blue-700 focus:ring-offset-2"
                                 to="#"
                             >
                                 Contact
@@ -73,7 +74,7 @@ const Navbar = ({ children }) => {
                         </li>
                         <li style={fontVarient} className="lg:mr-12">
                             <Link
-                                className="rounded ca text-slate-950 transition focus:outline-none  focus:ring-blue-700 focus:ring-offset-2"
+                                className="rounded ca text-slate-700 transition focus:outline-none  focus:ring-blue-700 focus:ring-offset-2"
                                 to="/Students"
                             >
                                 FAQ

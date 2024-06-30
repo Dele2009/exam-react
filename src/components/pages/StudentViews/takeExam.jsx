@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
-import QuestionGrid from './subElements/QuestionGrid';
+import { QuestionGrid } from '../../Elememts';
+import { useParams } from 'react-router-dom';
 
-const TakeExam = ({ exam }) => {
+const TakeExam = () => {
+    const { id } = useParams()
+    const [exam, setExam] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
+
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState(Array(exam.questions.length).fill(''));
+    useEffect(() => {
+        const fetchExam = async () => {
+            try {
+                const {data} = await axios.get(`/exam/${id}`);
+                setExam(data.Exam);
+                setIsLoading(false);
+            } catch (err) {
+                setError(err);
+                setIsLoading(false);
+            }
+        };
 
+        fetchExam();
+    }, [id]);
     const handleAnswerChange = (event) => {
         const updatedAnswers = [...answers];
         updatedAnswers[currentQuestionIndex] = event.target.value;
@@ -18,7 +36,7 @@ const TakeExam = ({ exam }) => {
     };
 
     const goToNextQuestion = () => {
-        
+
         if (currentQuestionIndex < exam.questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
         }
@@ -28,12 +46,22 @@ const TakeExam = ({ exam }) => {
         setCurrentQuestionIndex(index);
     };
 
+    if (isLoading) {
+        return (
+            <div className="w-full h-full flex justify-center items-center">
+                <h2 className="text-4xl text-emerald-600">
+                    Loading........
+                </h2>
+            </div>
+        )
+    }
+
     return (
         <div className="w-full min-h-screen flex flex-col md:flex-row gap-10 items-start justify-between px-4">
             <div className="bg-white p-12 rounded-lg shadow-md w-full md:w-8/12 lg:w-8/12 mb-6">
                 <h2 className="text-2xl mb-10 font-bold text-blue-600">Take Exam: {exam.title}</h2>
                 <div className="mb-14">
-                <h4 className="text-lg font-medium mb-4 text-gray-700">Question {currentQuestionIndex + 1}</h4>
+                    <h4 className="text-lg font-medium mb-4 text-gray-700">Question {currentQuestionIndex + 1}</h4>
                     <h4 className="text-lg mb-6 capitalize text-gray-700">{exam.questions[currentQuestionIndex].questionText}</h4>
                     {exam.questions[currentQuestionIndex].image && (
                         <img

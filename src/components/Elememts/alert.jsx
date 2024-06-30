@@ -22,7 +22,7 @@ export const Alert = ({ message, error, index, length, onClick }) => {
 
 
   let iconId = error ? 'exclamation-triangle-fill' : 'check-circle-fill';
-  let color = error ? 'border-red-800  bg-red-600' : 'border-green-800  bg-green-600';
+  let color = error ? 'border-red-700  bg-red-500' : 'border-green-700  bg-green-500';
 
   return (
     <>

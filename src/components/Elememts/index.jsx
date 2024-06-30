@@ -1,10 +1,10 @@
 import {Alert,AlertContainer} from './alert'
-import TakeExam from './takeExam'
 import ExamCard from './examCard'
+import QuestionGrid from './QuestionGrid'
 
 export {
     Alert,
     AlertContainer,
-    TakeExam,
-    ExamCard
+    ExamCard,
+    QuestionGrid
 }

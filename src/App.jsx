@@ -27,6 +27,7 @@ import CreateExam from './components/pages/dashboardViews/createExam';
 import { useEffect, useState, useContext, createContext } from 'react';
 import Errorpage from './components/pages/ErrorViews/route_error';
 import { useAuthContent } from './hooks';
+import { TakeExam } from './components/pages/StudentViews/takeExam';
 function App() {
 
   const { user } = useAuthContent()
@@ -71,6 +72,7 @@ function App() {
           {user && user.role === 'Student' && (
             <Route path='/Students' element={<NavBar/>}>
               <Route index element={<StudentExam/>}/>
+              <Route path='exams/:id' element={<TakeExam/>}/>
             </Route>
           )}
 
