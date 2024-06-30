@@ -20,15 +20,9 @@ export const Alert = ({ message, error, index,length,onClick }) => {
     };
   }, [onClick])
 
-
-  let iconId, color;
-
-  useEffect(()=>{
-    iconId = error ? 'exclamation-triangle-fill' : 'check-circle-fill';
-    color = error ? 'border-red-800  bg-red-600' : 'border-green-800  bg-green-600';
-
-  },[])
-
+  
+  let iconId = error ? 'exclamation-triangle-fill' : 'check-circle-fill';
+  let color = error ? 'border-red-800  bg-red-600' : 'border-green-800  bg-green-600';
 
   return (
     <>
@@ -47,7 +41,7 @@ export const Alert = ({ message, error, index,length,onClick }) => {
             clipRule="evenodd"></path>
         </symbol>
       </svg>
-      <div className={`font-regular flex alert justify-between items-center w-full max-w-96 rounded-lg bg-red-600 border-4 ${color} z-50  px-4 py-4 text-base text-white`} >
+      <div className={`font-regular flex alert justify-between items-center w-full max-w-96 rounded-lg border-4 ${color} z-50  px-4 py-4 text-base text-white`} >
         <div className="relative top-0 left-0">
           <svg className="mt-px h-7 w-7" role="img" fill="#f9f9f9">
             <use xlinkHref={`#${iconId}`} />
