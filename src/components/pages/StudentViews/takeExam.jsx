@@ -46,7 +46,7 @@ const TakeExam = () => {
         setCurrentQuestionIndex(index);
     };
 
-    if (isLoading || exams.length == 0) {
+    if (isLoading || exam.length == 0) {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <h2 className="text-4xl text-emerald-600">
