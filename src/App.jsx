@@ -40,10 +40,10 @@ function App() {
         <Routes>
 
           <Route path='/' element={<Navroot />}>
-            <Route path="/" element={<Heropage />} />
+            <Route index element={<Heropage />} />
             {/* {!user && */}
               {/* // ( */}
-              <Route path="/login" element={<Login />} />
+              <Route path="login" element={<Login />} />
             {/* // ) */}
             {/* // } */}
             
@@ -53,7 +53,7 @@ function App() {
 
           {user && (user.role === 'Teacher' || user.role === 'Admin') &&
             (<Route path='/Dashboard' element={<Dashboard />}>
-              <Route path='' element={<Overview />} />
+              <Route index element={<Overview />} />
               {user.role === 'Admin' && (
                 <>
                   <Route path='newuser/admin' element={<AdminForm />} />
@@ -70,7 +70,7 @@ function App() {
 
           {user && user.role === 'Student' && (
             <Route path='/Students' element={<NavBar/>}>
-              <Route path='' element={<StudentExam/>}/>
+              <Route index element={<StudentExam/>}/>
             </Route>
           )}
 

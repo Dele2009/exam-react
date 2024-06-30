@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from '../../../utilities/axios'
-// import axios from 'axios';
+import { Alert, AlertContainer } from '../../Elememts';
 import MultiSelect from '../../fcntionComps/multiselect';
 
 const submitToServer = async (formData, url) => {
@@ -78,6 +78,8 @@ export const StudentForm = () => {
     };
 
     const [studentFormData, setStudentFormData] = useState(getInitialState(Data, 'studentFormData'));
+    const [errors, setErrors] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
     // useEffect(() => {
     //     const formData = localStorage.getItem('studentFormData');
     //     if (formData) {
@@ -135,6 +137,7 @@ export const StudentForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true)
         // studentFormData[firstName] = 'maxmadman'
         // console.log(studentFormData[firstName])
         console.log(studentFormData.firstName)
@@ -155,7 +158,8 @@ export const StudentForm = () => {
 
         try {
             const response = await submitToServer(formData, '/auth/student')
-            if (response.status < 299)
+            const { message, error } = response.data
+            if (response.status < 299) {
                 setStudentFormData({
                     firstName: '',
                     lastName: '',
@@ -174,9 +178,16 @@ export const StudentForm = () => {
                     emergencyContact: '',
 
                 })
-            console.log('student created:', response);
+                setIsLoading(false)
+                setErrors((prev) => ([...prev, { message, error }]))
+                console.log('student created:', response);
+
+            }
         } catch (err) {
+            // const {message, error} = err.response.data
             console.error(err);
+            setIsLoading(false)
+            setErrors((prev) => ([...prev, { message: "Error creating account", error: true }]))
         }
         console.log(studentFormData);
     };
@@ -190,11 +201,18 @@ export const StudentForm = () => {
     ];
     return (
         <div className="bg-gray-100 transition-colors duration-300">
+            {errors.length > 0 && (
+                <AlertContainer>
+                    {errors.map((error_Obj, index) => (
+                        <Alert {...error_Obj} key={index} index={index} length={errors.length} onClick={() => setErrors(index)} />
+                    ))}
+                </AlertContainer>
+            )}
             <div className="container mx-auto p-4">
                 <div className="bg-white shadow rounded-lg p-6">
                     <h1 className="text-xl font-semibold mb-4 text-gray-900">Student Information</h1>
                     <p className="text-gray-600 mb-11">Use a permanent address where you can receive mail.</p>
-                    <form onSubmit={handleSubmit} encType='multipart/form-data'>
+                    <form onSubmit={handleSubmit}>
                         {/* Common Fields */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
                             <div className="relative">
@@ -297,8 +315,8 @@ export const StudentForm = () => {
                             <label htmlFor="emergencyContact" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Emergency Contact Information</label>
                         </div>
 
-                        <button type="submit" className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
-                            Add Student
+                        <button type="submit" disabled={isLoading} className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
+                            {isLoading ? 'Submitting' : 'Add Student'}
                         </button>
                     </form>
                 </div>
@@ -324,6 +342,9 @@ export const TeacherForm = () => {
         dataType: 'user'
     }
     const [teacherFormData, setTeacherFormData] = useState(getInitialState(Data, 'teacherFormData'));
+    const [errors, setErrors] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+
     useEffect(() => {
         console.log(teacherFormData)
         console.log('saving to localstorage')
@@ -370,6 +391,8 @@ export const TeacherForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true)
+
         // teacherFormData[firstName] = 'maxmadman'
         console.log(teacherFormData['firstName'])
         console.log(teacherFormData.firstName)
@@ -380,6 +403,8 @@ export const TeacherForm = () => {
 
         try {
             const response = await submitToServer(formData, '/auth/teacher')
+            const { message, error } = response.data
+
             if (response.status < 299)
                 setTeacherFormData({
                     firstName: '',
@@ -396,15 +421,26 @@ export const TeacherForm = () => {
                     classroomAssigned: '',
                     dataType: 'user'
                 })
+            setIsLoading(false)
+            setErrors((prev) => ([...prev, { message, error }]))
             console.log('teacher created:', response);
         } catch (err) {
             console.error(err);
+            setIsLoading(false)
+            setErrors((prev) => ([...prev, { message: "Error creating account", error: true }]))
         }
     };
 
 
     return (
         <div className="bg-gray-100 transition-colors duration-300">
+            {errors.length > 0 && (
+                <AlertContainer>
+                    {errors.map((error_Obj, index) => (
+                        <Alert {...error_Obj} key={index} index={index} length={errors.length} onClick={() => setErrors(index)} />
+                    ))}
+                </AlertContainer>
+            )}
             <div className="container mx-auto p-4">
                 <div className="bg-white shadow rounded-lg p-6">
                     <h1 className="text-xl font-semibold mb-4 text-gray-900">Teacher Information</h1>
@@ -483,8 +519,8 @@ export const TeacherForm = () => {
                             <label htmlFor="profilePicture" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Profile Picture</label>
                         </div>
 
-                        <button type="submit" className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
-                            Add Teacher
+                        <button type="submit" disabled={isLoading} className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
+                            {isLoading ? 'Submitting' : 'Add Teacher'}
                         </button>
                     </form>
                 </div>
@@ -508,6 +544,9 @@ export const AdminForm = () => {
         dataType: 'user'
     }
     const [adminFormData, setAdminFormData] = useState(getInitialState(Data, 'adminFormData'));
+    const [errors, setErrors] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
+
     useEffect(() => {
         console.log(adminFormData)
         console.log('saving to localstorage')
@@ -554,6 +593,8 @@ export const AdminForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true)
+
         const formData = new FormData();
         Object.keys(adminFormData).forEach((key) => {
             if (key === 'permissions') {
@@ -569,10 +610,12 @@ export const AdminForm = () => {
             //     body: formData
             // });
 
-            const response = await axios.post('http://localhost:5000/auth/admin', formData)
+            const response = await submitToServer(formData, '/auth/admin')
+            const { message, error } = response.data
+
             console.log(response)
             // if (response.ok) {
-            if (response.status > 199 && response.status < 300) {
+            if (response.status < 299) {
                 setAdminFormData({
                     firstName: '',
                     lastName: '',
@@ -586,10 +629,15 @@ export const AdminForm = () => {
                     permissions: [],
                     dataType: 'user'
                 })
+                setIsLoading(false)
+                setErrors((prev) => ([...prev, { message, error }]))
+                console.log('Admin created:', response);
+
             }
-            console.log('Admin created:', response);
         } catch (err) {
             console.error(err);
+            setIsLoading(false)
+            setErrors((prev) => ([...prev, { message: "Error creating account", error: true }]))
         }
     };
 
@@ -610,11 +658,18 @@ export const AdminForm = () => {
 
     return (
         <div className="bg-gray-100 transition-colors duration-300">
+            {errors.length > 0 && (
+                <AlertContainer>
+                    {errors.map((error_Obj, index) => (
+                        <Alert {...error_Obj} key={index} index={index} length={errors.length} onClick={() => setErrors(index)} />
+                    ))}
+                </AlertContainer>
+            )}
             <div className="container mx-auto p-4">
                 <div className="bg-white shadow rounded-lg p-6">
                     <h1 className="text-xl font-semibold mb-4 text-gray-900">Admin Information</h1>
                     <p className="text-gray-600 mb-11">Use a permanent address where you can receive mail.</p>
-                    <form onSubmit={handleSubmit} encType='multipart/form-data'>
+                    <form onSubmit={handleSubmit}>
                         {/* Common Fields */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
                             <div className="relative">

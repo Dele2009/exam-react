@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom"
 
 import { useLogin } from '../../../hooks'
-import { Alert } from '../../Elememts'
+import { Alert,AlertContainer } from '../../Elememts'
 const Login = () => {
     const [formValues, setFormValues] = useState({ email: '', password: '' })
     const navigate = useNavigate()
@@ -62,11 +62,11 @@ const Login = () => {
         <div className="h-screen bg-gray-100 flex justify-center">
 
             {errors.length > 0 && (
-                <div className="flex flex-col items-center justify-center gap-3 fixed z-50 top-20 right-4">
+                <AlertContainer>
                     {errors.map((error_Obj, index) => (
                         <Alert {...error_Obj} key={index} index={index} length={errors.length} onClick={() => setErrors(index)} />
                     ))}
-                </div>
+                </AlertContainer>
             )}
 
             <div className="z-30 py-6 px-8 h-fit mt-20 w-1/3 bg-white rounded shadow-xl">

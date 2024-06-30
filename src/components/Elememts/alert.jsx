@@ -21,9 +21,14 @@ export const Alert = ({ message, error, index,length,onClick }) => {
   }, [onClick])
 
 
+  let iconId, color;
 
-  const iconId = error ? 'exclamation-triangle-fill' : 'check-circle-fill';
-  const color = error ? 'border-red-800 bg-red-600' : 'border-green-800 bg-green-600';
+  useEffect(()=>{
+    iconId = error ? 'exclamation-triangle-fill' : 'check-circle-fill';
+    color = error ? 'border-red-800  bg-red-600' : 'border-green-800  bg-green-600';
+
+  },[])
+
 
   return (
     <>
@@ -72,7 +77,7 @@ export const Alert = ({ message, error, index,length,onClick }) => {
 
 export const AlertContainer = ({children}) => {
   return(
-    <div className="flex flex-col items-center justify-center gap-3 fixed z-50 top-5 right-4 max-h-96 overflow-y-auto backdrop-blur-2xl px-10 py-5">
+    <div className="flex flex-col items-center justify-center gap-3 fixed z-50 top-5 right-4 max-h-96 overflow-y-auto px-10 py-5">
       {children}
     </div>
   )
