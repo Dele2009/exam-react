@@ -27,7 +27,7 @@ import CreateExam from './components/pages/dashboardViews/createExam';
 import { useEffect, useState, useContext, createContext } from 'react';
 import Errorpage from './components/pages/ErrorViews/route_error';
 import { useAuthContent } from './hooks';
-import { TakeExam } from './components/pages/StudentViews/takeExam';
+import TakeExam from './components/pages/StudentViews/takeExam';
 function App() {
 
   const { user } = useAuthContent()
