@@ -33,6 +33,7 @@ const CreateExam = () => {
       title: '',
       subject: '',
       questions: [],
+      duration: { hours: '0', minutes: '0' }
     };
     const ExamState = localStorage.getItem('ExamCreation');
     const Exam = ExamState ? JSON.parse(ExamState) : Data;
@@ -54,6 +55,8 @@ const CreateExam = () => {
   const [title, setTitle] = useState(initialState.title);
   const [subject, setSubject] = useState(initialState.subject);
   const [questions, setQuestions] = useState(initialState.questions);
+  const [hours, setHours] = useState(initialState.duration.hours);
+  const [minutes, setMinutes] = useState(initialState.duration.minutes);
   const [error, setError] = useState([]);
   const [isLoading, setIsloading] = useState(false);
 
@@ -73,12 +76,13 @@ const CreateExam = () => {
         title,
         subject,
         questions: questionsWithDataURLs,
+        duration: { hours, minutes }
       };
       localStorage.setItem('ExamCreation', JSON.stringify(Exam));
     };
 
     saveExamToLocalStorage();
-  }, [title, subject, questions]);
+  }, [title, subject, questions, hours, minutes]);
 
   useEffect(() => {
     console.log(error, questions);
@@ -177,6 +181,8 @@ const CreateExam = () => {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('subject', subject);
+      formData.append('duration[hours]', hours);
+      formData.append('duration[minutes]', minutes);
 
       questions.forEach((question, index) => {
         formData.append(`questions[${index}][questionText]`, question.questionText);
@@ -204,6 +210,8 @@ const CreateExam = () => {
         setTitle('');
         setSubject('');
         setQuestions([]);
+        setHours('0');
+        setMinutes('0');
         // setPreviews({});
       }
       // setError([]);
