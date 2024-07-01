@@ -150,6 +150,10 @@ const CreateExam = () => {
         return;
 
       }
+      if (hours === '0' || !minutes === '00') {
+        setError((prev) => ([...prev, { message: 'Please set exam duration to proceed', error: true }]));
+        return;
+      }
       if (!isQuestionComplete(currentQuestion)) {
         setError((prev) => ([...prev, { message: 'Please complete the current question before adding a new one.', error: true }]));
         return;
@@ -170,6 +174,10 @@ const CreateExam = () => {
       setError((prev) => ([...prev, { message: 'Title and subject must be include to proceed', error: true }]));
       return;
 
+    }
+    if (hours === '0' || !minutes === '00') {
+      setError((prev) => ([...prev, { message: 'Please set exam duration to proceed', error: true }]));
+      return;
     }
     if (questions.some((question) => !isQuestionComplete(question))) {
       setError((prev) => ([...prev, { message: 'Please complete all questions before submitting.', error: true }]));
@@ -259,26 +267,30 @@ const CreateExam = () => {
                 className="block border border-gray-300 p-3 rounded-lg w-full"
               />
             </div>
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
-              <select
-                value={hours}
-                onChange={(e) => setHours(e.target.value)}
-                className="block border border-gray-300 p-3 rounded-lg w-full mb-4 md:mb-0"
-              >
-                {[...Array(10).keys()].map((hour) => (
-                  <option key={hour} value={hour}>{hour} h</option>
-                ))}
-              </select>
-              <select
-                value={minutes}
-                onChange={(e) => setMinutes(e.target.value)}
-                className="block border border-gray-300 p-3 rounded-lg w-full"
-              >
-                {['00', '15', '30', '45'].map((minute) => (
-                  <option key={minute} value={minute}>{minute} m</option>
-                ))}
-              </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+              <div className="flex justify-center items-center gap-2 ">
+                <select
+                  value={hours}
+                  onChange={(e) => setHours(e.target.value)}
+                  className="block border border-gray-300 p-3 rounded-lg w-full mb-4 md:mb-0"
+                >
+                  {[...Array(10).keys()].map((hour) => (
+                    <option key={hour} value={hour}>{hour} {'hr'}</option>
+                  ))}
+                </select>
+                <span className='text-2xl font-bold'> : </span>
+                <select
+                  value={minutes}
+                  onChange={(e) => setMinutes(e.target.value)}
+                  className="block border border-gray-300 p-3 rounded-lg w-full"
+                >
+                  {['00', '15', '30', '45'].map((minute) => (
+                    <option key={minute} value={minute}>{minute} min</option>
+                  ))}
+                </select>
+              </div>
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {questions.map((question, questionIndex) => (
                 <div key={questionIndex} className="bg-gray-50 p-4 rounded-lg shadow-md mb-6">
@@ -295,7 +307,7 @@ const CreateExam = () => {
                     <img
                       src={question.image ? URL.createObjectURL(question.image) : upload}
                       alt=""
-                      className={`${previews[questionIndex] ? 'w-full h-full object-cover' : 'w-1/2 h-1/2'}`}
+                      className={`${question.image ? 'w-full h-full object-cover' : 'w-1/2 h-1/2'}`}
                     />
                   </label>
                   <input
@@ -362,7 +374,7 @@ const CreateExam = () => {
           questions.map((question, questionIndex) => (
             <div key={questionIndex} className="mb-6 p-4 border border-gray-300 rounded-lg">
               <h2 className="text-lg font-medium text-gray-700 ">Question {questionIndex + 1}</h2>
-              {previews[questionIndex] && (
+              {question.image && (
                 // <img
                 //   src={previews[questionIndex]}
                 //   alt={`Question ${questionIndex + 1} Image`}
