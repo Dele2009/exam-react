@@ -7,7 +7,7 @@ import { Alert, AlertContainer } from '../../Elememts';
 const CreateExam = () => {
   const { user } = useAuthContent();
 
-  
+
   const fileToDataURL = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -33,7 +33,6 @@ const CreateExam = () => {
       title: '',
       subject: '',
       questions: [],
-      previews: {}
     };
     const ExamState = localStorage.getItem('ExamCreation');
     const Exam = ExamState ? JSON.parse(ExamState) : Data;
@@ -56,7 +55,6 @@ const CreateExam = () => {
   const [subject, setSubject] = useState(initialState.subject);
   const [questions, setQuestions] = useState(initialState.questions);
   const [error, setError] = useState([]);
-  const [previews, setPreviews] = useState(initialState.previews);
   const [isLoading, setIsloading] = useState(false);
 
   useEffect(() => {
@@ -75,17 +73,16 @@ const CreateExam = () => {
         title,
         subject,
         questions: questionsWithDataURLs,
-        previews,
       };
       localStorage.setItem('ExamCreation', JSON.stringify(Exam));
     };
 
     saveExamToLocalStorage();
-  }, [title, subject, questions, previews]);
+  }, [title, subject, questions]);
 
   useEffect(() => {
-    console.log(error,questions);
-  }, [error,questions]);
+    console.log(error, questions);
+  }, [error, questions]);
 
   const handleQuestionChange = (index, field, value) => {
     const updatedQuestions = [...questions];
@@ -103,34 +100,34 @@ const CreateExam = () => {
     const updatedQuestions = [...questions];
     updatedQuestions[questionIndex].image = file;
     setQuestions(updatedQuestions);
-    generatePreview(questionIndex, file);
+    // generatePreview(questionIndex, file);
   };
 
 
-  const handleImagePreview = async (data) => {
-    if (data) {
-      const reader = new FileReader();
+  // const handleImagePreview = async (data) => {
+  //   if (data) {
+  //     const reader = new FileReader();
 
-      const preview = await new Promise((resolve, reject) => {
-        reader.onloadend = () => {
-          resolve(reader.result);
-        };
-        reader.onerror = (error) => {
-          reject(error);
-        };
-        reader.readAsDataURL(data);
-      });
+  //     const preview = await new Promise((resolve, reject) => {
+  //       reader.onloadend = () => {
+  //         resolve(reader.result);
+  //       };
+  //       reader.onerror = (error) => {
+  //         reject(error);
+  //       };
+  //       reader.readAsDataURL(data);
+  //     });
 
-      return preview;
-    } else {
-      return null;
-    }
-  };
+  //     return preview;
+  //   } else {
+  //     return null;
+  //   }
+  // };
 
-  const generatePreview = async (index, file) => {
-    const preview = await handleImagePreview(file);
-    setPreviews((prev) => ({ ...prev, [index]: preview }));
-  };
+  // const generatePreview = async (index, file) => {
+  //   const preview = await handleImagePreview(file);
+  //   setPreviews((prev) => ({ ...prev, [index]: preview }));
+  // };
 
 
   const isQuestionComplete = (question) => {
@@ -195,24 +192,24 @@ const CreateExam = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      if(response){
-    
-      const { message, error } = response.data;
-      setError((prev) => ([...prev, { message, error }]));
-      setIsloading(false)
+      if (response) {
+
+        const { message, error } = response.data;
+        setError((prev) => ([...prev, { message, error }]));
+        setIsloading(false)
 
 
-      console.log('Exam created:', response);
-      // Reset the form after successful submission
-      setTitle('');
-      setSubject('');
-      setQuestions([]);
-      setPreviews({});
+        console.log('Exam created:', response);
+        // Reset the form after successful submission
+        setTitle('');
+        setSubject('');
+        setQuestions([]);
+        // setPreviews({});
       }
       // setError([]);
     } catch (err) {
       console.log(err);
-            setIsloading(false)
+      setIsloading(false)
 
       setError((prev) => ([...prev, { message: 'Error creating exam. Please try again.', error: true }]))
       // setError();
@@ -253,6 +250,26 @@ const CreateExam = () => {
                 placeholder="Subject"
                 className="block border border-gray-300 p-3 rounded-lg w-full"
               />
+            </div>
+            <div className="flex flex-col md:flex-row gap-4 mb-6">
+              <select
+                value={hours}
+                onChange={(e) => setHours(e.target.value)}
+                className="block border border-gray-300 p-3 rounded-lg w-full mb-4 md:mb-0"
+              >
+                {[...Array(10).keys()].map((hour) => (
+                  <option key={hour} value={hour}>{hour} h</option>
+                ))}
+              </select>
+              <select
+                value={minutes}
+                onChange={(e) => setMinutes(e.target.value)}
+                className="block border border-gray-300 p-3 rounded-lg w-full"
+              >
+                {['00', '15', '30', '45'].map((minute) => (
+                  <option key={minute} value={minute}>{minute} m</option>
+                ))}
+              </select>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {questions.map((question, questionIndex) => (
@@ -344,8 +361,8 @@ const CreateExam = () => {
                 //   className="w-full h-48 object-cover rounded-lg mb-4"
                 // />
                 <img
-                src={URL.createObjectURL(question.image)}
-                alt={`Question ${questionIndex + 1} Image`}
+                  src={URL.createObjectURL(question.image)}
+                  alt={`Question ${questionIndex + 1} Image`}
                   className="w-full h-48 object-cover rounded-lg mb-4"
                 />
               )}

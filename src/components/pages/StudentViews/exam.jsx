@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ExamCard } from '../../Elememts';
+import { ExamCard, SpinningDots } from '../../Elememts';
 import axios from '../../../utilities/axios';
 
 const StudentExam = () => {
@@ -32,9 +32,7 @@ const StudentExam = () => {
     if (isLoading || exams.length == 0){
         return(
             <div className="w-full h-full flex justify-center items-center">
-                <h2 className="text-4xl text-emerald-600">
-                    Loading........
-                </h2>
+              <SpinningDots/>
             </div>
         ) 
     }

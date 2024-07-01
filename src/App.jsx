@@ -49,7 +49,7 @@ function App() {
             {/* // } */}
             
 
-            <Route path='*' element={<Errorpage />} />
+            {/* <Route path='*' element={<Errorpage />} /> */}
           </Route>
 
           {user && (user.role === 'Teacher' || user.role === 'Admin') &&
@@ -64,7 +64,7 @@ function App() {
                )}
 
               <Route path='exams/create' element={<CreateExam />} />
-              <Route path='*' element={<Errorpage />} />
+              {/* <Route path='*' element={<Errorpage />} /> */}
 
             </Route>)
           }
