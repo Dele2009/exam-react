@@ -8,15 +8,16 @@ const TakeExam = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [answers, setAnswers] = useState(Array(exam.questions.length).fill(''));
+    const [answers, setAnswers] = useState([]);
     useEffect(() => {
         const fetchExam = async () => {
             try {
                 const {data} = await axios.get(`/exam/${id}`);
                 setExam(data.Exam);
+                setAnswers(Array(data.Exam.questions.length).fill(''))
                 setIsLoading(false);
             } catch (err) {
-                setError(err);
+                console.log('Error fetching', err)
                 setIsLoading(false);
             }
         };
