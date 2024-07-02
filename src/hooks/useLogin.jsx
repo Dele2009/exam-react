@@ -5,7 +5,7 @@ import { useAuthContent } from "./useAuth";
 export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState([]);
-    const { dispatch } = useAuthContent();
+    const { user,dispatch } = useAuthContent();
     const handleErrors = (data) =>{
         setErrors(data)
     }
@@ -13,6 +13,11 @@ export const useLogin = () => {
         setIsLoading(true);
         // setErrors([]);
         try {
+            if(user){
+                setErrors([{ message: 'Still logged-in, logout to proceed', error: true },...errors]);
+                setIsLoading(false);
+                return;
+            }
             const { data, status } = await axios.post('/auth/sign-in', formData);
             console.log("data-login", data);
             setIsLoading(false);

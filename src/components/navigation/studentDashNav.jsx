@@ -29,7 +29,7 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
-        <div className="hidden md:flex items-center gap-5">
+        <div className="flex items-center gap-5">
           <Tooltip text='Profile'>
             <Link to="" className="flex items-center space-x-2 hover:text-gray-200">
               <FaUserCircle className="w-5 h-5" />
@@ -49,15 +49,14 @@ const NavBar = () => {
               {/* <span>Notifications</span> */}
             </Link>
           </Tooltip>
-          <button onClick={logout} className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+          <button onClick={logout} className="hidden md:inline bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
             Logout
           </button>
-        </div>
-        <div className="md:hidden flex items-center">
-          <button onClick={toggleMobileMenu}>
-            {isMobileMenuOpen ? <FaTimes className="text-white" /> : <FaBars className="text-white" />}
+          <button onClick={toggleMobileMenu} className='md:hidden'>
+            {isMobileMenuOpen ? <FaTimes className="text-white h-5 w-5" /> : <FaBars className="text-white h-5 w-5" />}
           </button>
         </div>
+        
 
 
         <div
@@ -68,14 +67,7 @@ const NavBar = () => {
             <FaTachometerAlt />
             <span>Dashboard</span>
           </Link>
-          <Link to="" className="py-2 flex items-center space-x-2" onClick={toggleMobileMenu}>
-            <FaUserCircle />
-            <span>Profile</span>
-          </Link>
-          <Link to="" className="py-2 flex items-center space-x-2" onClick={toggleMobileMenu}>
-            <FaBell />
-            <span>Notifications</span>
-          </Link>
+          
           <button
             onClick={logout}
             className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded w-full mt-2 flex items-center justify-center space-x-2"

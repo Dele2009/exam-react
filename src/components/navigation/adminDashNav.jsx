@@ -26,12 +26,12 @@ const Dashboard = () => {
                     </svg>
                 </label>
                 <nav aria-label="Sidebar Navigation"
-                    className="peer-checked:w-64 left-0 z-10 flex h-screen w-0 flex-col overflow-hidden bg-emerald-700 text-white transition-all md:h-screen">
+                    className="peer-checked:w-64 peer- left-0 z-10 flex h-screen w-0 flex-col overflow-hidden bg-emerald-700 text-white transition-all md:h-screen">
                     <div className="bg-slate-800 mt-5 py-4 pl-10 md:mt-1">
                         <Link to="/" className="">
                             <span
                                 className="mr-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 align-bottom text-2xl font-bold">U</span>
-                            <span className="text-xl">rbane</span>
+                            <span className="text-xl">SchoolSmart</span>
                         </Link>
                     </div>
                     <ul className="mt-8 md:mt-20 px-4  space-y-3  overflow-y-auto overflow-x-hidden">

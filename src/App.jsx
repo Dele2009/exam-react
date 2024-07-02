@@ -42,15 +42,9 @@ function App() {
 
           <Route path='/' element={<Navroot />}>
             <Route index element={<Heropage />} />
-            {/* {!user && */}
-              {/* // ( */}
-              <Route path="login" element={<Login />} />
-            {/* // ) */}
-            {/* // } */}
-            
-
-            {/* <Route path='*' element={<Errorpage />} /> */}
+           {/* <Route path='*' element={<Errorpage />} /> */}
           </Route>
+          <Route path="/login" element={<Login />} />
 
           {user && (user.role === 'Teacher' || user.role === 'Admin') &&
             (<Route path='/Dashboard' element={<Dashboard />}>
