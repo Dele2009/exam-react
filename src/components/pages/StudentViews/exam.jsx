@@ -10,57 +10,41 @@ const StudentExam = () => {
         const fetchExams = async () => {
             try {
                 const { data } = await axios.get('/exam/get');
-                console.log(data)
                 setExams(data.Exams);
-                setIsLoading(false)
+                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching exams:', error);
-                setIsLoading(false)
+                setIsLoading(false);
             }
         };
         fetchExams();
     }, []);
 
-    // const handleSelectExam = (exam) => {
-    //     setSelectedExam(exam);
-    // };
-
-    // const handleBackToDashboard = () => {
-    //     setSelectedExam(null);
-    // };
-
-    if (isLoading || exams.length == 0){
-        return(
+    if (isLoading) {
+        return (
             <div className="w-full h-full flex justify-center items-center">
-              <SpinningDots/>
+                <SpinningDots />
             </div>
-        ) 
+        );
     }
 
     return (
-        <div className="flex flex-col items-center justify-center px-4">
-            {/* {!selectedExam ? ( */}
-                <div className="w-full md:w-8/12 lg:w-6/12">
-                    <h2 className="text-2xl mb-4 font-bold text-blue-600">Available Exams</h2>
-                    {exams.length === 0 ? (
-                        <p className="text-gray-700">No exams available.</p>
-                    ) : (
-                        exams.map((exam, index) => (
-                            <ExamCard key={index} exam={exam}  />
-                        ))
-                    )}
-                </div>
-            {/* ) : ( */}
-                {/* <div className="w-full">
-                    <button
-                        onClick={handleBackToDashboard}
-                        className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded mb-4"
-                    >
-                        Back to Dashboard
-                    </button>
-                    <TakeExam exam={selectedExam} />
-                </div> */}
-            {/* )} */}
+        <div className="flex flex-col items-center justify-center px-4 py-6">
+            <div className="w-full md:w-11/12">
+                <h2 className="text-3xl mb-6 font-bold text-blue-600">Available Exams</h2>
+                {exams.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center">
+                        <p className="text-gray-700 mb-4">No exams available at the moment.</p>
+                        <img src="/assets/empty-state.svg" alt="No exams" className="w-48 h-48" />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-x-7 gap-y-2 ">
+                        {exams.map((exam, index) => (
+                           <ExamCard key={index} exam={exam} />
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

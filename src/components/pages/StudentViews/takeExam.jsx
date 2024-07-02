@@ -24,12 +24,16 @@ const TakeExam = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [direction, setDirection] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(0);
+
     useEffect(() => {
         const fetchExam = async () => {
             try {
                 const { data } = await axios.get(`/exam/${id}`);
                 setExam(data.Exam);
                 setAnswers(Array(data.Exam.questions.length).fill(''))
+                const totalDuration = parseInt(data.Exam.duration.hours) * 3600 + parseInt(data.Exam.duration.minutes) * 60;
+                setTimeLeft(totalDuration);
                 setIsLoading(false);
             } catch (err) {
                 console.log('Error fetching', err)
@@ -39,6 +43,16 @@ const TakeExam = () => {
 
         fetchExam();
     }, [id]);
+
+    useEffect(() => {
+        if (timeLeft > 0) {
+            const timerId = setInterval(() => {
+                setTimeLeft((prevTime) => prevTime - 1);
+            }, 1000);
+            return () => clearInterval(timerId);
+        }
+    }, [timeLeft]);
+
     const handleAnswerChange = (event) => {
         const updatedAnswers = [...answers];
         updatedAnswers[currentQuestionIndex] = event.target.value;
@@ -74,7 +88,7 @@ const TakeExam = () => {
                 {/* <Spinner/> */}
                 {/* <BouncingDots/> */}
                 {/* <PulsingCircle/> */}
-                <SpinningDots/>
+                <SpinningDots />
 
                 {/* <SlidingBars/> */}
                 {/* <FadingCircle/> */}
@@ -84,6 +98,13 @@ const TakeExam = () => {
             </div>
         )
     }
+
+    const formatTime = (seconds) => {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = seconds % 60;
+        return `${h.toString().padStart(2, '0')}h : ${m.toString().padStart(2, '0')}m : ${s.toString().padStart(2, '0')}s`;
+    };
 
     const questionVariants = {
         enter: (direction) => {
@@ -171,6 +192,9 @@ const TakeExam = () => {
                 </div>
             </div>
             <div className="bg-gray-100 w-full md:w-4/12 p-6 rounded-lg shadow-md sticky top-3">
+                <div className="flex justify-between mb-4">
+                    <span className="text-xl text-slate-600 font-bold">{formatTime(timeLeft)}</span>
+                </div>
                 <div className="flex justify-between mb-4">
                     <span className="text-gray-700">Question {currentQuestionIndex + 1} of {exam.questions.length}</span>
                     <span className="text-gray-700">{answers.filter(answer => answer !== '').length} answered</span>

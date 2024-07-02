@@ -1,6 +1,7 @@
 import { Alert, AlertContainer } from './alert'
 import ExamCard from './examCard'
 import QuestionGrid from './QuestionGrid'
+import Tooltip from './Tooltip'
 
 import {
     Spinner,
@@ -18,6 +19,7 @@ export {
     AlertContainer,
     ExamCard,
     QuestionGrid,
+    Tooltip,
     Spinner,
     BouncingDots,
     PulsingCircle,

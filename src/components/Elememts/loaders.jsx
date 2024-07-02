@@ -15,7 +15,7 @@ export const Spinner = () => {
 
     return (
         <motion.div
-            className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full"
+            className="w-16 h-16 border-4 border-emerald-600 border-t-transparent rounded-full"
             variants={spinnerVariants}
             animate="animate"
         />
@@ -44,7 +44,7 @@ export const BouncingDots = () => {
             {[...Array(3)].map((_, i) => (
                 <motion.div
                     key={i}
-                    className="w-4 h-4 bg-blue-600 rounded-full"
+                    className="w-4 h-4 bg-emerald-600 rounded-full"
                     variants={dotVariants}
                     initial="initial"
                     animate="animate"
@@ -71,7 +71,7 @@ export const PulsingCircle = () => {
 
     return (
         <motion.div
-            className="w-16 h-16 bg-blue-600 rounded-full"
+            className="w-16 h-16 bg-emerald-600 rounded-full"
             variants={circleVariants}
             animate="animate"
         />
@@ -96,7 +96,7 @@ export const SpinningDots = () => {
             {[...Array(3)].map((_, i) => (
                 <motion.div
                     key={i}
-                    className="w-4 h-4 bg-blue-600 rounded-full"
+                    className="w-4 h-4 bg-emerald-600 rounded-full"
                     variants={dotVariants}
                     animate="animate"
                 />
@@ -125,7 +125,7 @@ export const GrowingBars = () => {
             {[...Array(4)].map((_, i) => (
                 <motion.div
                     key={i}
-                    className="w-2 h-12 bg-blue-600"
+                    className="w-2 h-12 bg-emerald-600"
                     variants={barVariants}
                     initial="initial"
                     animate="animate"
@@ -151,7 +151,7 @@ export const RotatingSquare = () => {
 
     return (
         <motion.div
-            className="w-12 h-12 bg-blue-600"
+            className="w-12 h-12 bg-emerald-600"
             variants={squareVariants}
             animate="animate"
         />
@@ -172,7 +172,7 @@ export const FadingCircle = () => {
 
     return (
         <motion.div
-            className="w-16 h-16 bg-blue-600 rounded-full"
+            className="w-16 h-16 bg-emerald-600 rounded-full"
             variants={circleVariants}
             animate="animate"
         />
@@ -201,7 +201,7 @@ export const SlidingBars = () => {
             {[...Array(3)].map((_, i) => (
                 <motion.div
                     key={i}
-                    className="w-2 h-10 bg-blue-600"
+                    className="w-2 h-10 bg-emerald-600"
                     variants={barVariants}
                     initial="initial"
                     animate="animate"
