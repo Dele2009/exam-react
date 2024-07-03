@@ -92,7 +92,7 @@ const UserTable = () => {
         }
         FetchUsers()
 
-    }, [handleModalConfirm()])
+    }, [handleModalConfirm])
     const handleEdit = () => {
         console.log('edit button ')
     }
