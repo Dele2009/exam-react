@@ -28,6 +28,7 @@ import { useEffect, useState, useContext, createContext } from 'react';
 import Errorpage from './components/pages/ErrorViews/route_error';
 import { useAuthContent } from './hooks';
 import TakeExam from './components/pages/StudentViews/takeExam';
+import UserTable from './components/pages/dashboardViews/userTable';
 function App() {
 
   const { user } = useAuthContent()
@@ -51,6 +52,7 @@ function App() {
               <Route index element={<Overview />} />
               {user.role === 'Admin' && (
                 <>
+                  <Route path='users' element={<UserTable/>}/>
                   <Route path='newuser/admin' element={<AdminForm />} />
                   <Route path='newuser/teacher' element={<TeacherForm />} />
                   <Route path='newuser/student' element={<StudentForm />} />

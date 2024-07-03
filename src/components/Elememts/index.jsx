@@ -2,6 +2,7 @@ import { Alert, AlertContainer } from './alert'
 import ExamCard from './examCard'
 import QuestionGrid from './QuestionGrid'
 import Tooltip from './Tooltip'
+import Modal from './modal'
 
 import {
     Spinner,
@@ -20,6 +21,7 @@ export {
     ExamCard,
     QuestionGrid,
     Tooltip,
+    Modal,
     Spinner,
     BouncingDots,
     PulsingCircle,
