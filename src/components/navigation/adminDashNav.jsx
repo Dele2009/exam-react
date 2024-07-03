@@ -135,7 +135,7 @@ const Dashboard = () => {
                                 </ul>
                             )}
                         </li>
-                        <li className="relative">
+                        {/* <li className="relative">
                             <Link to=''
                                 className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 text-gray-300 focus:outline-none">
                                 <span className="text-2xl"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img"
@@ -170,7 +170,7 @@ const Dashboard = () => {
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg></span><span className="">Settings</span>
                             </Link>
-                        </li>
+                        </li> */}
                     </ul>
 
                     <div className="my-6 mt-auto ml-10 flex cursor-pointer">

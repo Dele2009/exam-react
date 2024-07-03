@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from '../../../utilities/axios'
 import { SpinningDots,Modal } from '../../Elememts';
 import { FaUserGraduate, FaChalkboardTeacher, FaUserShield } from 'react-icons/fa';
+import FemaleAvatar from '../../../assets/female_avatar.svg'
+import MaleAvatar from '../../../assets/male_avatar.svg'
 
 
 const UserTable = () => {
@@ -45,19 +47,19 @@ const UserTable = () => {
         try {
             if (actionType === 'delete') {
                 await axios.delete(`/admin/deleteuser/${selectedUserId}`);
-                // setUsers(users.filter(user => user._id !== selectedUserId));
-                // setCounts({
-                //     students: users.filter(user => user.__t === 'Student').length,
-                //     teachers: users.filter(user => user.__t === 'Teacher').length,
-                //     admins: users.filter(user => user.__t === 'Admin').length,
-                // });
+                setUsers(users.filter(user => user._id !== selectedUserId));
+                setCounts({
+                    students: users.filter(user => user.__t === 'Student').length,
+                    teachers: users.filter(user => user.__t === 'Teacher').length,
+                    admins: users.filter(user => user.__t === 'Admin').length,
+                });
             } else if (actionType === 'toggle') {
                 const newStatus = !toggleStatus[selectedUserId];
                 await axios.put(`/admin/setUserstatus/${selectedUserId}`, { active: newStatus });
-                // setToggleStatus(prevStatus => ({
-                //     ...prevStatus,
-                //     [selectedUserId]: newStatus
-                // }));
+                setToggleStatus(prevStatus => ({
+                    ...prevStatus,
+                    [selectedUserId]: newStatus
+                }));
             }
         } catch (error) {
             console.log('Error confirming action', error);
@@ -92,7 +94,7 @@ const UserTable = () => {
         }
         FetchUsers()
 
-    }, [handleModalConfirm])
+    }, [])
     const handleEdit = () => {
         console.log('edit button ')
     }
@@ -177,10 +179,10 @@ const UserTable = () => {
                                     <div className="relative h-10 w-10">
                                         <img
                                             className="h-full w-full rounded-full object-cover object-center"
-                                            src={user.profilePicture || "https://via.placeholder.com/150"}
+                                            src={user.profilePicture || (user.gender === 'Female' ? FemaleAvatar : MaleAvatar)}
                                             alt={user.name}
                                         />
-                                        <span className={`absolute right-0 bottom-0 h-2 w-2 rounded-full ${user.active ? 'bg-green-400' : 'bg-red-400'} ring ring-white`}></span>
+                                        <span className={`absolute right-0 bottom-0 h-2 w-2 rounded-full ${toggleStatus[user._id] ? 'bg-green-400' : 'bg-red-400'} ring ring-white`}></span>
                                     </div>
                                     <div className="text-sm">
                                         <div className="font-medium text-gray-700">{user.firstName}</div>
@@ -190,9 +192,9 @@ const UserTable = () => {
                                 <td className="px-6 py-4">{user.__t}</td>
                                 {/* <td className="px-6 py-4">{user.department}</td> */}
                                 <td className="px-6 py-4">
-                                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${user.active ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
-                                        <span className={`h-1.5 w-1.5 rounded-full ${user.active ? 'bg-green-600' : 'bg-red-600'}`}></span>
-                                        {user.active || 'Suspended'}
+                                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${toggleStatus[user._id] ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+                                        <span className={`h-1.5 w-1.5 rounded-full ${toggleStatus[user._id]? 'bg-green-600' : 'bg-red-600'}`}></span>
+                                        {toggleStatus[user._id] ? 'Active' : 'Suspended'}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4">
@@ -219,7 +221,7 @@ const UserTable = () => {
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex justify-end gap-4">
-                                        <a href="#" onClick={() => handleEdit(user.id)}>
+                                        <a href="#" onClick={() => handleEdit(user._id)}>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 fill="none"
@@ -235,7 +237,7 @@ const UserTable = () => {
                                                 />
                                             </svg>
                                         </a>
-                                        <a href="#" onClick={() => handleDelete(user.id)}>
+                                        <a href="#" onClick={() => handleDelete(user._id)}>
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 fill="none"

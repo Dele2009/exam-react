@@ -7,7 +7,7 @@ const Modal = ({ isOpen, title, content, onCancel, onConfirm }) => {
         <>
             {isOpen && (
                 <motion.div
-                    className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto bg-black bg-opacity-50"
+                    className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto bg-black bg-opacity-60"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}

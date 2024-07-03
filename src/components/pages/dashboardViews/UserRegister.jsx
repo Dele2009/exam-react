@@ -8,7 +8,7 @@ const submitToServer = async (formData, url) => {
         const response = await axios.post(url, formData,
             {
                 headers: {
-                    'Content-type': 'multipart/formdata'
+                    'Content-type': 'multipart/form-data'
                 }
             }
         );
@@ -17,7 +17,7 @@ const submitToServer = async (formData, url) => {
         //     body: formData
         // });
         console.log('Server response gotten:', response);
-        return { response, status: response.status };
+        return { data: response.data, status: response.status };
     } catch (error) {
         console.error('Submission error:', error);
         throw error;
@@ -65,6 +65,7 @@ export const StudentForm = () => {
         username: '',
         phone: '',
         password: '',
+        gender: '',
         dob: '',
         address: '',
         studentId: '',
@@ -160,25 +161,7 @@ export const StudentForm = () => {
             const response = await submitToServer(formData, '/auth/student')
             const { message, error } = response.data
             if (response.status < 299) {
-                setStudentFormData({
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    username: '',
-                    phone: '',
-                    password: '',
-                    dob: '',
-                    address: '',
-                    studentId: '',
-                    gradeLevel: '',
-                    parentName: '',
-                    parentContact: '',
-                    enrollmentDate: '',
-                    coursesEnrolled: [],
-                    emergencyContact: '',
-
-                })
-                setIsLoading(false)
+                setStudentFormData(Data)
                 setErrors((prev) => ([...prev, { message, error }]))
                 console.log('student created:', response);
 
@@ -186,8 +169,9 @@ export const StudentForm = () => {
         } catch (err) {
             // const {message, error} = err.response.data
             console.error(err);
-            setIsLoading(false)
             setErrors((prev) => ([...prev, { message: "Error creating account", error: true }]))
+        } finally {
+            setIsLoading(false)
         }
         console.log(studentFormData);
     };
@@ -242,7 +226,15 @@ export const StudentForm = () => {
                             <input type="password" id="password" readOnly value={studentFormData.password} name="password" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                             <label htmlFor="password" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Password</label>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+                            <div className="relative">
+                                <select id="gender" value={studentFormData.gender} name="gender" className="peer border p-2 rounded w-full bg-white" onChange={handleChange} required>
+                                    <option value="" selected >---select Level---</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">female</option>
+                                </select>
+                                <label htmlFor="gender" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Gender</label>
+                            </div>
                             <div className="relative">
                                 <input type="date" id="dob" value={studentFormData.dob} name="dob" className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                                 <label htmlFor="dob" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Date of Birth</label>
@@ -315,7 +307,7 @@ export const StudentForm = () => {
                             <label htmlFor="emergencyContact" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Emergency Contact Information</label>
                         </div>
 
-                        <button type="submit" disabled={isLoading} className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
+                        <button type="submit" disabled={isLoading} className="px-4 py-2 rounded disabled:bg-blue-300 bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
                             {isLoading ? 'Submitting' : 'Add Student'}
                         </button>
                     </form>
@@ -333,6 +325,7 @@ export const TeacherForm = () => {
         username: '',
         password: '',
         phone: '',
+        gender: '',
         dob: '',
         address: '',
         employeeId: '',
@@ -405,29 +398,16 @@ export const TeacherForm = () => {
             const response = await submitToServer(formData, '/auth/teacher')
             const { message, error } = response.data
 
-            if (response.status < 299)
-                setTeacherFormData({
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    username: '',
-                    password: '',
-                    phone: '',
-                    dob: '',
-                    address: '',
-                    employeeId: '',
-                    department: '',
-                    hireDate: '',
-                    classroomAssigned: '',
-                    dataType: 'user'
-                })
-            setIsLoading(false)
-            setErrors((prev) => ([...prev, { message, error }]))
-            console.log('teacher created:', response);
+            if (response.status < 299) {
+                setTeacherFormData(Data)
+                setErrors((prev) => ([...prev, { message, error }]))
+                console.log('teacher created:', response);
+            }
         } catch (err) {
             console.error(err);
-            setIsLoading(false)
             setErrors((prev) => ([...prev, { message: "Error creating account", error: true }]))
+        } finally {
+            setIsLoading(false)
         }
     };
 
@@ -475,7 +455,15 @@ export const TeacherForm = () => {
                             <input type="password" id="password" name="password" readOnly value={teacherFormData.password} className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                             <label htmlFor="password" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Password</label>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+                            <div className="relative">
+                                <select id="gender" value={teacherFormData.gender} name="gender" className="peer border p-2 rounded w-full bg-white" onChange={handleChange} required>
+                                    <option value="" selected >---select Level---</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">female</option>
+                                </select>
+                                <label htmlFor="gender" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Gender</label>
+                            </div>
                             <div className="relative">
                                 <input type="date" id="dob" name="dob" value={teacherFormData.dob} className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                                 <label htmlFor="dob" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Date of Birth</label>
@@ -519,8 +507,8 @@ export const TeacherForm = () => {
                             <label htmlFor="profilePicture" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Profile Picture</label>
                         </div>
 
-                        <button type="submit" disabled={isLoading} className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
-                            {isLoading ? 'Submitting' : 'Add Teacher'}
+                        <button type="submit" disabled={isLoading} className="px-4 py-2 rounded disabled:bg-blue-300 bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
+                            {isLoading ? 'Submitting......' : 'Add Teacher'}
                         </button>
                     </form>
                 </div>
@@ -538,6 +526,7 @@ export const AdminForm = () => {
         password: '',
         phone: '',
         dob: '',
+        gender: '',
         address: '',
         department: '',
         permissions: [],
@@ -616,28 +605,16 @@ export const AdminForm = () => {
             console.log(response)
             // if (response.ok) {
             if (response.status < 299) {
-                setAdminFormData({
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    username: '',
-                    password: '',
-                    phone: '',
-                    dob: '',
-                    address: '',
-                    department: '',
-                    permissions: [],
-                    dataType: 'user'
-                })
-                setIsLoading(false)
+                setAdminFormData(Data)
                 setErrors((prev) => ([...prev, { message, error }]))
                 console.log('Admin created:', response);
 
             }
         } catch (err) {
             console.error(err);
-            setIsLoading(false)
             setErrors((prev) => ([...prev, { message: "Error creating account", error: true }]))
+        } finally {
+            setIsLoading(false)
         }
     };
 
@@ -700,7 +677,15 @@ export const AdminForm = () => {
                             <input type="password" id="password" name="password" value={adminFormData.password} className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                             <label htmlFor="password" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Password</label>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+                            <div className="relative">
+                                <select id="gender" value={adminFormData.gender} name="gender" className="peer border p-2 rounded w-full bg-white" onChange={handleChange} required>
+                                    <option value="" selected >---select Level---</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">female</option>
+                                </select>
+                                <label htmlFor="gender" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Gender</label>
+                            </div>
                             <div className="relative">
                                 <input type="date" id="dob" name="dob" value={adminFormData.dob} className="peer border p-2 rounded w-full" placeholder=" " required onChange={handleChange} />
                                 <label htmlFor="dob" className="absolute left-2 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-top-left peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-2 peer-focus:-translate-y-8 peer-focus:scale-80">Date of Birth</label>
@@ -738,8 +723,8 @@ export const AdminForm = () => {
                             {/* <input type="text" value={adminFormData.dataType} onChange={handleChange} className='hidden'/> */}
                         </div>
 
-                        <button type="submit" className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
-                            Add Admin
+                        <button type="submit" disabled={isLoading} className="disabled:bg-blue-300 px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 focus:outline-none transition-colors">
+                            {isLoading ? 'Submitting......' : 'Add Admin'}
                         </button>
                     </form>
                 </div>
