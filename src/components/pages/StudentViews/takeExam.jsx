@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { QuestionGrid } from '../../Elememts';
 import { useParams } from 'react-router-dom';
 import axios from '../../../utilities/axios'
+import { FaArrowLeft, FaArrowRight, FaClock } from 'react-icons/fa';
+
 
 import {
     Spinner,
@@ -17,10 +19,9 @@ import {
 } from '../../Elememts'
 
 const TakeExam = () => {
-    const { id } = useParams()
-    const [exam, setExam] = useState([])
+    const { id } = useParams();
+    const [exam, setExam] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [direction, setDirection] = useState(0);
@@ -31,12 +32,12 @@ const TakeExam = () => {
             try {
                 const { data } = await axios.get(`/exam/${id}`);
                 setExam(data.Exam);
-                setAnswers(Array(data.Exam.questions.length).fill(''))
+                setAnswers(Array(data.Exam.questions.length).fill(''));
                 const totalDuration = parseInt(data.Exam.duration.hours) * 3600 + parseInt(data.Exam.duration.minutes) * 60;
                 setTimeLeft(totalDuration);
                 setIsLoading(false);
             } catch (err) {
-                console.log('Error fetching', err)
+                console.log('Error fetching', err);
                 setIsLoading(false);
             }
         };
@@ -67,7 +68,6 @@ const TakeExam = () => {
     };
 
     const goToNextQuestion = () => {
-
         if (currentQuestionIndex < exam.questions.length - 1) {
             setDirection(1);
             setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -78,25 +78,12 @@ const TakeExam = () => {
         setCurrentQuestionIndex(index);
     };
 
-    if (isLoading || exam.length == 0) {
+    if (isLoading || exam.length === 0) {
         return (
             <div className="w-full h-full flex justify-center items-center">
-                {/* <h2 className="text-4xl text-emerald-600">
-                    Loading........
-                </h2> */}
-
-                {/* <Spinner/> */}
-                {/* <BouncingDots/> */}
-                {/* <PulsingCircle/> */}
                 <SpinningDots />
-
-                {/* <SlidingBars/> */}
-                {/* <FadingCircle/> */}
-
-                {/* <GrowingBars/> */}
-                {/* <RotatingSquare/> */}
             </div>
-        )
+        );
     }
 
     const formatTime = (seconds) => {
@@ -107,12 +94,10 @@ const TakeExam = () => {
     };
 
     const questionVariants = {
-        enter: (direction) => {
-            return {
-                x: direction === 1 ? "100%" : "-100%",
-                opacity: 0,
-            };
-        },
+        enter: (direction) => ({
+            x: direction === 1 ? "100%" : "-100%",
+            opacity: 0,
+        }),
         center: {
             x: 0,
             opacity: 1,
@@ -121,34 +106,42 @@ const TakeExam = () => {
                 opacity: { duration: 0.2 },
             },
         },
-        exit: (direction) => {
-            return {
-                x: direction === 1 ? "-100%" : "100%",
-                opacity: 0,
-                transition: {
-                    x: { type: "spring", stiffness: 300, damping: 30 },
-                    opacity: { duration: 0.2 },
-                },
-            };
-        },
+        exit: (direction) => ({
+            x: direction === 1 ? "-100%" : "100%",
+            opacity: 0,
+            transition: {
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+            },
+        }),
     };
 
     return (
         <div className="w-full min-h-screen flex flex-col md:flex-row gap-10 items-start justify-between px-4">
-            <div className="bg-white p-12 rounded-lg shadow-md w-full md:w-8/12 lg:w-8/12 mb-6 overflow-hidden">
-                <h2 className="text-2xl mb-10 font-bold text-blue-600">Take Exam: {exam.title}</h2>
-                <AnimatePresence mode='wait' custom={direction}>
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full md:w-8/12 lg:w-8/12 mb-6 overflow-hidden">
+                <h2 className="text-3xl mb-6 font-bold text-blue-600">Take Exam: {exam.title}</h2>
+                <div className="flex items-center justify-between mb-4">
+                    <span className="text-lg text-gray-600 font-medium">
+                        <FaClock className="inline mr-2" /> {formatTime(timeLeft)}
+                    </span>
+                    <span className="text-lg text-gray-600 font-medium">
+                        Question {currentQuestionIndex + 1} of {exam.questions.length}
+                    </span>
+                </div>
+                <AnimatePresence mode="wait" custom={direction}>
                     <motion.div
                         key={currentQuestionIndex}
                         variants={questionVariants}
                         custom={direction}
-                        initial="initial"
-                        animate="animate"
+                        initial="enter"
+                        animate="center"
                         exit="exit"
                         transition={{ duration: 0.5 }}
                         className="mb-14"
                     >
-                        <h4 className="text-lg font-medium mb-4 text-gray-700">Question {currentQuestionIndex + 1}</h4>
+                        <h4 className="text-xl font-semibold mb-4 text-gray-700">
+                            {exam.questions[currentQuestionIndex].questionText}
+                        </h4>
                         {exam.questions[currentQuestionIndex].image && (
                             <img
                                 src={exam.questions[currentQuestionIndex].image}
@@ -156,10 +149,9 @@ const TakeExam = () => {
                                 className="w-7/12 h-48 my-7 rounded-lg m-auto"
                             />
                         )}
-                        <h4 className="text-lg mb-6 capitalize text-gray-700">{exam.questions[currentQuestionIndex].questionText}</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {exam.questions[currentQuestionIndex].options.map((option, index) => (
-                                <label key={index} className="flex items-center space-x-2">
+                                <label key={index} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
                                     <input
                                         type="radio"
                                         name={`question${currentQuestionIndex}`}
@@ -178,16 +170,16 @@ const TakeExam = () => {
                     <button
                         onClick={goToPreviousQuestion}
                         disabled={currentQuestionIndex === 0}
-                        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded disabled:opacity-50 disabled:bg-gray-600"
+                        className="flex items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded disabled:opacity-50 disabled:bg-gray-600"
                     >
-                        Previous Question
+                        <FaArrowLeft className="mr-2" /> Previous
                     </button>
                     <button
                         onClick={goToNextQuestion}
                         disabled={currentQuestionIndex === exam.questions.length - 1}
-                        className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded disabled:opacity-50 disabled:bg-gray-600"
+                        className="flex items-center bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded disabled:opacity-50 disabled:bg-gray-600"
                     >
-                        Next Question
+                        Next <FaArrowRight className="ml-2" />
                     </button>
                 </div>
             </div>
