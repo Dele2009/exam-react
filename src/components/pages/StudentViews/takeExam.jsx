@@ -7,6 +7,8 @@ import axios from '../../../utilities/axios'
 import { FaArrowLeft, FaArrowRight, FaClock } from 'react-icons/fa';
 
 
+import { FaArrowLeft, FaArrowRight, FaClock } from 'react-icons/fa';
+
 import {
     Spinner,
     BouncingDots,
