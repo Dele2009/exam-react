@@ -3,9 +3,12 @@ import ExamCard from './examCard'
 import QuestionGrid from './QuestionGrid'
 import Tooltip from './Tooltip'
 import Modal from './modal'
+import ToggleSwitch from './toggler'
 
 import {
+    LogoLoader,
     Spinner,
+    SpinnerLoader,
     BouncingDots,
     PulsingCircle,
     SpinningDots,
@@ -22,7 +25,10 @@ export {
     QuestionGrid,
     Tooltip,
     Modal,
+    ToggleSwitch,
+    LogoLoader,
     Spinner,
+    SpinnerLoader,
     BouncingDots,
     PulsingCircle,
     SpinningDots,

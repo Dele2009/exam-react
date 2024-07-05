@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ExamCard, SpinningDots } from '../../Elememts';
+import { ExamCard, LogoLoader, SpinningDots } from '../../Elememts';
 import axios from '../../../utilities/axios';
 
 const StudentExam = () => {
@@ -11,10 +11,12 @@ const StudentExam = () => {
             try {
                 const { data } = await axios.get('/exam/get');
                 setExams(data.Exams);
-                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching exams:', error);
-                setIsLoading(false);
+            }finally{
+                setTimeout(()=>{
+                    setIsLoading(false);
+                },5000)
             }
         };
         fetchExams();
@@ -24,6 +26,7 @@ const StudentExam = () => {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <SpinningDots />
+                {/* <LogoLoader /> */}
             </div>
         );
     }

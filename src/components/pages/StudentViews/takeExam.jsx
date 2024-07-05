@@ -7,7 +7,6 @@ import axios from '../../../utilities/axios'
 import { FaArrowLeft, FaArrowRight, FaClock } from 'react-icons/fa';
 
 
-import { FaArrowLeft, FaArrowRight, FaClock } from 'react-icons/fa';
 
 import {
     Spinner,
@@ -37,10 +36,12 @@ const TakeExam = () => {
                 setAnswers(Array(data.Exam.questions.length).fill(''));
                 const totalDuration = parseInt(data.Exam.duration.hours) * 3600 + parseInt(data.Exam.duration.minutes) * 60;
                 setTimeLeft(totalDuration);
-                setIsLoading(false);
             } catch (err) {
                 console.log('Error fetching', err);
-                setIsLoading(false);
+            }finally{
+                setTimeout(()=>{
+                    setIsLoading(false);
+                },5000)
             }
         };
 
@@ -119,7 +120,7 @@ const TakeExam = () => {
     };
 
     return (
-        <div className="w-full min-h-screen flex flex-col md:flex-row gap-10 items-start justify-between px-4">
+        <div className="w-full min-h-screen flex flex-col md:flex-row gap-10 items-start justify-between px-12">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full md:w-8/12 lg:w-8/12 mb-6 overflow-hidden">
                 <h2 className="text-3xl mb-6 font-bold text-blue-600">Take Exam: {exam.title}</h2>
                 <div className="flex items-center justify-between mb-4">
@@ -141,16 +142,17 @@ const TakeExam = () => {
                         transition={{ duration: 0.5 }}
                         className="mb-14"
                     >
-                        <h4 className="text-xl font-semibold mb-4 text-gray-700">
-                            {exam.questions[currentQuestionIndex].questionText}
-                        </h4>
-                        {exam.questions[currentQuestionIndex].image && (
+                        {/* {exam.questions[currentQuestionIndex].image && ( */}
                             <img
                                 src={exam.questions[currentQuestionIndex].image}
                                 alt={`Question ${currentQuestionIndex + 1} Image`}
-                                className="w-7/12 h-48 my-7 rounded-lg m-auto"
+                                className={`${exam.questions[currentQuestionIndex].image ? 'block' : 'hidden'} w-full h-3/6 md:w-6/12 md:h-48  my-7 rounded-lg m-auto`}
                             />
-                        )}
+                        {/* )} */}
+                        
+                        <h4 className="text-xl font-semibold mb-4 text-gray-700">
+                            {exam.questions[currentQuestionIndex].questionText}
+                        </h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {exam.questions[currentQuestionIndex].options.map((option, index) => (
                                 <label key={index} className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">

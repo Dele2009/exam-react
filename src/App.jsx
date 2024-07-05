@@ -29,6 +29,7 @@ import Errorpage from './components/pages/ErrorViews/route_error';
 import { useAuthContent } from './hooks';
 import TakeExam from './components/pages/StudentViews/takeExam';
 import UserTable from './components/pages/dashboardViews/userTable';
+import ExamTable from './components/pages/dashboardViews/examTable';
 function App() {
 
   const { user } = useAuthContent()
@@ -59,6 +60,7 @@ function App() {
                 </>
                )}
 
+              <Route path='exams' element={<ExamTable />} />
               <Route path='exams/create' element={<CreateExam />} />
               {/* <Route path='*' element={<Errorpage />} /> */}
 

@@ -1,5 +1,157 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+// import Logo from './logo';
+
+
+
+export const LogoLoader = () => {
+    const circleVariants = {
+        start: {
+            scale: 0.5,
+        },
+        end: {
+            scale: 2,
+            transition: {
+                repeat: Infinity,
+                duration: 1,
+                ease: 'easeInOut',
+            },
+        },
+    };
+
+    const loaderContainer = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100vh',
+    };
+
+    const circleStyle = {
+        width: '3rem',
+        height: '3rem',
+        borderRadius: '50%',
+        backgroundColor: '#3498db',
+    };
+
+    return (
+        <div style={loaderContainer}>
+            <motion.div
+                style={circleStyle}
+                variants={circleVariants}
+                initial="start"
+                animate="end"
+            />
+        </div>
+    );
+};
+
+export const SpinnerLoader = () => {
+    const ringVariants = {
+        animate: {
+            rotate: [0, 360],
+            transition: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 1,
+                ease: "linear",
+            },
+        },
+    };
+
+    const loaderContainer = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100vh',
+    };
+
+    const ringStyle = {
+        width: '4rem',
+        height: '4rem',
+        border: '0.5rem solid #3498db',
+        borderTop: '0.5rem solid transparent',
+        borderRadius: '50%',
+    };
+
+    return (
+        <div style={loaderContainer}>
+            <motion.div
+                style={ringStyle}
+                variants={ringVariants}
+                animate="animate"
+            />
+        </div>
+    );
+};
+
+// export const SquareLoader = () => {
+//     const squareVariants = {
+//         rotate: {
+//             rotate: 360,
+//             transition: {
+//                 repeat: Infinity,
+//                 repeatType: "loop",
+//                 duration: 1,
+//                 ease: "linear",
+//             },
+//         },
+//     };
+
+//     const loaderContainer = {
+//         display: 'flex',
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//         width: '100%',
+//         height: '100vh',
+//     };
+
+//     const squareStyle = {
+//         display: 'block',
+//         width: '2rem',
+//         height: '2rem',
+//         margin: '0.5rem',
+//         backgroundColor: '#3498db',
+//     };
+
+//     return (
+//         <div style={loaderContainer}>
+//             <motion.div
+//                 style={squareStyle}
+//                 variants={squareVariants}
+//                 animate="rotate"
+//             />
+//             <motion.div
+//                 style={squareStyle}
+//                 variants={squareVariants}
+//                 animate="rotate"
+//                 transition={{
+//                     repeat: Infinity,
+//                     repeatType: "loop",
+//                     duration: 1,
+//                     ease: "linear",
+//                     delay: 0.2,
+//                 }}
+//             />
+//             <motion.div
+//                 style={squareStyle}
+//                 variants={squareVariants}
+//                 animate="rotate"
+//                 transition={{
+//                     repeat: Infinity,
+//                     repeatType: "loop",
+//                     duration: 1,
+//                     ease: "linear",
+//                     delay: 0.4,
+//                 }}
+//             />
+//         </div>
+//     );
+// };
+
+
+
 
 export const Spinner = () => {
     const spinnerVariants = {
@@ -92,11 +244,11 @@ export const SpinningDots = () => {
     };
 
     return (
-        <div className="flex space-x-2">
-            {[...Array(3)].map((_, i) => (
+        <div className="flex space-x-3">
+            {[...Array(4)].map((_, i) => (
                 <motion.div
                     key={i}
-                    className="w-4 h-4 bg-emerald-600 rounded-full"
+                    className="w-4 h-4 md:w-7 md:h-7 bg-emerald-600 rounded-full"
                     variants={dotVariants}
                     animate="animate"
                 />
