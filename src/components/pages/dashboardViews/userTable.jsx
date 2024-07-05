@@ -10,7 +10,8 @@ const UserTable = () => {
     const [users, setUsers] = useState(null)
     const [isLoading, setIsLoading] = useState(true);
     const [counts, setCounts] = useState({ students: 0, teachers: 0, admins: 0 });
-    const [toggleStatus, setToggleStatus] = useState({});
+    // const [toggleStatus, setToggleStatus] = useState({});
+    const [error, setError] = useState(null)
     const [modalOpen, setModalOpen] = useState(false); // State for modal visibility
     const [actionType, setActionType] = useState(''); // State to track the action type (delete/toggle)
     const [selectedUserId, setSelectedUserId] = useState(''); // State to store selected user ID
@@ -42,27 +43,7 @@ const UserTable = () => {
         setActionType(''); // Clear action type
     };
 
-    const FetchUsers = async () => {
-        try {
-            const { data } = await axios.get(`/admin/getusers`);
-            setUsers(data.Users)
-            const students = data.Users.filter(user => user.__t === 'Student').length;
-            const teachers = data.Users.filter(user => user.__t === 'Teacher').length;
-            const admins = data.Users.filter(user => user.__t === 'Admin').length;
-
-            setCounts({ students, teachers, admins });
-
-            const initialToggleStatus = {};
-            data.Users.forEach(user => {
-                initialToggleStatus[user._id] = user.active;
-            });
-            setToggleStatus(initialToggleStatus);
-            setIsLoading(false)
-        } catch (error) {
-            console.log('Error fetching', err)
-            setIsLoading(false);
-        }
-    }
+    
 
 
     const handleModalConfirm = async () => {
@@ -76,12 +57,19 @@ const UserTable = () => {
                     admins: users.filter(user => user.__t === 'Admin').length,
                 });
             } else if (actionType === 'toggle') {
-                const newStatus = !toggleStatus[selectedUserId];
+                const userToUpdate = users.find((user) => user._id === selectedUserId);
+                const newStatus = !userToUpdate.active;
                 await axios.put(`/admin/setUserstatus/${selectedUserId}`, { active: newStatus });
-                setToggleStatus(prevStatus => ({
-                    ...prevStatus,
-                    [selectedUserId]: newStatus
-                }));
+                // setToggleStatus(prevStatus => ({
+                //     ...prevStatus,
+                //     [selectedUserId]: newStatus
+                // }));
+
+                setUsers((prevUsers) =>
+                    prevUsers.map((user) =>
+                        user._id === selectedUserId ? { ...user, active: newStatus } : user
+                    )
+                );
             }
         } catch (error) {
             console.log('Error confirming action', error);
@@ -95,7 +83,28 @@ const UserTable = () => {
     };
 
     useEffect(() => {
-
+        const FetchUsers = async () => {
+            try {
+                const { data } = await axios.get(`/admin/getusers`);
+                setUsers(data.Users)
+                const students = data.Users.filter(user => user.__t === 'Student').length;
+                const teachers = data.Users.filter(user => user.__t === 'Teacher').length;
+                const admins = data.Users.filter(user => user.__t === 'Admin').length;
+    
+                setCounts({ students, teachers, admins });
+    
+                // const initialToggleStatus = {};
+                // data.Users.forEach(user => {
+                //     initialToggleStatus[user._id] = user.active;
+                // });
+                // setToggleStatus(initialToggleStatus);
+            } catch (error) {
+                console.log('Error fetching', error)
+                setError(error.message)
+            }finally{
+                setIsLoading(false);
+            }
+        }
         FetchUsers()
 
     }, [])
@@ -105,7 +114,7 @@ const UserTable = () => {
 
 
 
-    if (isLoading || !users) {
+    if (isLoading ) {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 {/* <h2 className="text-4xl text-emerald-600">
@@ -125,6 +134,16 @@ const UserTable = () => {
             </div>
         )
     }
+
+    
+    if(error){
+        return(
+            <div className='w-full h-full flex justify-center items-center'>
+               <h2  className='text-slate-700 font-bold font-sans text-3xl'>Request Timeout, try again</h2>
+            </div>
+        )
+    }
+
     return (
         <>
             <div className="flex flex-wrap justify-around ">
@@ -186,7 +205,7 @@ const UserTable = () => {
                                             src={user.profilePicture || (user.gender === 'Female' ? FemaleAvatar : MaleAvatar)}
                                             alt={user.name}
                                         />
-                                        <span className={`absolute right-0 bottom-0 h-2 w-2 rounded-full ${toggleStatus[user._id] ? 'bg-green-400' : 'bg-red-400'} ring ring-white`}></span>
+                                        <span className={`absolute right-0 bottom-0 h-2 w-2 rounded-full ${user.active ? 'bg-green-400' : 'bg-red-400'} ring ring-white`}></span>
                                     </div>
                                     <div className="text-sm">
                                         <div className="font-medium text-gray-700">{user.firstName}</div>
@@ -196,9 +215,9 @@ const UserTable = () => {
                                 <td className="px-6 py-4">{user.__t}</td>
                                 {/* <td className="px-6 py-4">{user.department}</td> */}
                                 <td className="px-6 py-4">
-                                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${toggleStatus[user._id] ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
-                                        <span className={`h-1.5 w-1.5 rounded-full ${toggleStatus[user._id] ? 'bg-green-600' : 'bg-red-600'}`}></span>
-                                        {toggleStatus[user._id] ? 'Active' : 'Suspended'}
+                                    <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${user.active ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+                                        <span className={`h-1.5 w-1.5 rounded-full ${user.active ? 'bg-green-600' : 'bg-red-600'}`}></span>
+                                        {user.active ? 'Active' : 'Suspended'}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4">
@@ -220,7 +239,7 @@ const UserTable = () => {
 
                                         <ToggleSwitch
                                             id={userIndex}
-                                            checked={toggleStatus[user._id]}
+                                            checked={user.active}
                                             onToggle={() => handleToggleChange(user._id)}
                                         />
                                     </div>

@@ -23,6 +23,7 @@ const TakeExam = () => {
     const { id } = useParams();
     const [exam, setExam] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [direction, setDirection] = useState(0);
@@ -38,6 +39,7 @@ const TakeExam = () => {
                 setTimeLeft(totalDuration);
             } catch (err) {
                 console.log('Error fetching', err);
+                setError(err.message)
             }finally{
                 setTimeout(()=>{
                     setIsLoading(false);
@@ -81,12 +83,20 @@ const TakeExam = () => {
         setCurrentQuestionIndex(index);
     };
 
-    if (isLoading || exam.length === 0) {
+    if (isLoading ) {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <SpinningDots />
             </div>
         );
+    }
+
+    if(error){
+        return(
+            <div className='w-full h-full flex justify-center items-center'>
+               <h2  className='text-slate-700 font-bold font-sans text-3xl'>Request Timeout, try again</h2>
+            </div>
+        )
     }
 
     const formatTime = (seconds) => {

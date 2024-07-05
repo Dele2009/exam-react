@@ -5,6 +5,8 @@ import axios from '../../../utilities/axios';
 const StudentExam = () => {
     const [exams, setExams] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null)
+
 
     useEffect(() => {
         const fetchExams = async () => {
@@ -13,6 +15,7 @@ const StudentExam = () => {
                 setExams(data.Exams);
             } catch (error) {
                 console.error('Error fetching exams:', error);
+                setError(error.message)
             }finally{
                 setTimeout(()=>{
                     setIsLoading(false);
@@ -29,6 +32,14 @@ const StudentExam = () => {
                 {/* <LogoLoader /> */}
             </div>
         );
+    }
+
+    if(error){
+        return(
+            <div className='w-full h-full flex justify-center items-center'>
+               <h2  className='text-slate-700 font-bold font-sans text-3xl'>Request Timeout, try again</h2>
+            </div>
+        )
     }
 
     return (
