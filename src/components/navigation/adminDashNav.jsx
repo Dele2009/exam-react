@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Outlet, Link } from "react-router-dom";
 import { useAuthContent, useLogout } from '../../hooks'
+import FemaleAvatar from '../../assets/female_avatar.svg'
+import MaleAvatar from '../../assets/male_avatar.svg'
 
 const Dashboard = () => {
     const [isAddUserCollapsed, setIsAddUserCollapsed] = useState(false);
@@ -192,12 +194,15 @@ const Dashboard = () => {
 
                     <div className="my-6 mt-auto ml-10 flex cursor-pointer">
                         <div>
-                            <img className="h-12 w-12 rounded-full"
-                                src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Profile" />
+                            <img 
+                                className="h-12 w-12 rounded-full"
+                                src={user.profilePicture || (user.info.gender === 'Female' ? FemaleAvater : MaleAvatar )} 
+                                alt="Profile" 
+                            />
                         </div>
                         <div className="ml-3">
                             <p className="font-medium">{user.info.name}</p>
-                            <p className="text-sm text-gray-300">Kyiv, Ukraine</p>
+                            <p className="text-sm text-gray-300">{user.info.email}</p>
                         </div>
                     </div>
                 </nav>
