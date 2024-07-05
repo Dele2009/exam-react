@@ -18,7 +18,7 @@ const Dashboard = () => {
             <aside className="fixed z-50 md:relative">
                 <input type="checkbox" defaultChecked className="peer hidden" id="sidebar-open" />
                 <label
-                    className="peer-checked:rounded-full peer-checked:p-2 peer-checked:right-6 peer-checked:bg-gray-600 peer-checked:text-white absolute top-8 z-20 mx-4 cursor-pointer"
+                    className="peer-checked:rounded-full peer-checked:p-2 peer-checked:right-6 peer-checked:top-5 peer-checked:bg-gray-600 peer-checked:text-white absolute top-8 z-20 mx-4 cursor-pointer"
                     htmlFor="sidebar-open">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" strokeWidth="2">
@@ -27,11 +27,15 @@ const Dashboard = () => {
                 </label>
                 <nav aria-label="Sidebar Navigation"
                     className="peer-checked:w-64 peer- left-0 z-10 flex h-screen w-0 flex-col overflow-hidden bg-emerald-700 text-white transition-all md:h-screen">
-                    <div className="bg-slate-800 mt-5 py-4 pl-10 md:mt-1">
-                        <Link to="/" className="">
+                    <div className="bg-slate-800 mt-5 py-4 pl-3 md:mt-1">
+                        {/* <Link to="/" className="">
                             <span
                                 className="mr-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 align-bottom text-2xl font-bold">U</span>
                             <span className="text-xl">SchoolSmart</span>
+                        </Link> */}
+                        <Link to="/Dashboard" className="text-xl font-bold flex items-center space-x-2">
+                            <FaUsers />
+                            <span>SchoolSmarts</span>
                         </Link>
                     </div>
                     <ul className="mt-8 md:mt-20 px-4  space-y-3  overflow-y-auto overflow-x-hidden">
