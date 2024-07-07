@@ -36,16 +36,16 @@ const Login = () => {
                 setFormValues({ email: '', password: '' });
             }
 
-            if (role === 'Admin' || role === 'Teacher') {
-                setTimeout(() => {
-                    navigate('/Dashboard');
+            // if (role === 'Admin' || role === 'Teacher') {
+            //     setTimeout(() => {
+            //         navigate('/Dashboard');
 
-                }, 5000)
-            } else {
-                setTimeout(() => {
-                    navigate('/Students');
-                }, 5000)
-            }
+            //     }, 5000)
+            // } else {
+            //     setTimeout(() => {
+            //         navigate('/Students');
+            //     }, 5000)
+            // }
         } catch (e) {
             console.error(e);
             setFormValues((prev)=>({ ...prev, password: '' }));

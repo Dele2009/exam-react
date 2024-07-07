@@ -13,5 +13,13 @@ export const useLogout = () => {
         return;
     }
 
-    return { logout };
+    const authLogout = () =>{
+        localStorage.removeItem('User');
+
+        dispatch({ type: 'LOGOUT' })
+        navigate('/login')
+        return;
+    }
+
+    return { logout, authLogout };
 }

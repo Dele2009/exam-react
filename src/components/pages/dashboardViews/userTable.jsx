@@ -4,9 +4,11 @@ import { SpinningDots, Modal, ToggleSwitch } from '../../Elememts';
 import { FaUserGraduate, FaChalkboardTeacher, FaUserShield, FaPencilAlt, FaTrash } from 'react-icons/fa';
 import FemaleAvatar from '../../../assets/female_avatar.svg'
 import MaleAvatar from '../../../assets/male_avatar.svg'
-
+import { useAuthContent } from '../../../hooks';
 
 const UserTable = () => {
+    const { user } = useAuthContent()
+
     const [users, setUsers] = useState(null)
     const [isLoading, setIsLoading] = useState(true);
     const [counts, setCounts] = useState({ students: 0, teachers: 0, admins: 0 });
@@ -15,6 +17,39 @@ const UserTable = () => {
     const [modalOpen, setModalOpen] = useState(false); // State for modal visibility
     const [actionType, setActionType] = useState(''); // State to track the action type (delete/toggle)
     const [selectedUserId, setSelectedUserId] = useState(''); // State to store selected user ID
+    
+    const headers = {
+        'Authorization': `Bearer ${user.token}`
+    }
+
+
+
+    useEffect(() => {
+        const FetchUsers = async () => {
+            try {
+                const { data } = await axios.get(`/admin/getusers`);
+                setUsers(data.Users)
+                const students = data.Users.filter(user => user.__t === 'Student').length;
+                const teachers = data.Users.filter(user => user.__t === 'Teacher').length;
+                const admins = data.Users.filter(user => user.__t === 'Admin').length;
+
+                setCounts({ students, teachers, admins });
+
+                // const initialToggleStatus = {};
+                // data.Users.forEach(user => {
+                //     initialToggleStatus[user._id] = user.active;
+                // });
+                // setToggleStatus(initialToggleStatus);
+            } catch (error) {
+                console.log('Error fetching', error)
+                setError(error.message)
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        FetchUsers()
+
+    }, [])
 
 
     const handleDelete = async (id) => {
@@ -42,9 +77,6 @@ const UserTable = () => {
         setSelectedUserId(''); // Clear selected user ID
         setActionType(''); // Clear action type
     };
-
-    
-
 
     const handleModalConfirm = async () => {
         try {
@@ -81,40 +113,13 @@ const UserTable = () => {
             setActionType(''); // Clear action type
         }
     };
-
-    useEffect(() => {
-        const FetchUsers = async () => {
-            try {
-                const { data } = await axios.get(`/admin/getusers`);
-                setUsers(data.Users)
-                const students = data.Users.filter(user => user.__t === 'Student').length;
-                const teachers = data.Users.filter(user => user.__t === 'Teacher').length;
-                const admins = data.Users.filter(user => user.__t === 'Admin').length;
-    
-                setCounts({ students, teachers, admins });
-    
-                // const initialToggleStatus = {};
-                // data.Users.forEach(user => {
-                //     initialToggleStatus[user._id] = user.active;
-                // });
-                // setToggleStatus(initialToggleStatus);
-            } catch (error) {
-                console.log('Error fetching', error)
-                setError(error.message)
-            }finally{
-                setIsLoading(false);
-            }
-        }
-        FetchUsers()
-
-    }, [])
     const handleEdit = () => {
         console.log('edit button ')
     }
 
 
 
-    if (isLoading ) {
+    if (isLoading) {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 {/* <h2 className="text-4xl text-emerald-600">
@@ -135,11 +140,11 @@ const UserTable = () => {
         )
     }
 
-    
-    if(error){
-        return(
+
+    if (error) {
+        return (
             <div className='w-full h-full flex justify-center items-center'>
-               <h2  className='text-slate-700 font-bold font-sans text-3xl'>Request Timeout, try again</h2>
+                <h2 className='text-slate-700 font-bold font-sans text-3xl'>Request Timeout, try again</h2>
             </div>
         )
     }

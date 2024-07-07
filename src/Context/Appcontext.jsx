@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect, createContext, useReducer } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { isTokenExpired } from "../utilities/helpers";
 
 export const AppContext = createContext()
 
@@ -15,11 +17,9 @@ export const authReducer = (state, action) => {
 
 
 const AppContextProvider = ({ children }) => {
-    const [user, setUser] = useState('')
 
-    const handleToken = (token) => {
-        setUser(token)
-    }
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const [state, dispatch] = useReducer(authReducer, {
         user: null
@@ -29,10 +29,18 @@ const AppContextProvider = ({ children }) => {
     }, [state])
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('User'))
+
         if (user) {
+            if (isTokenExpired(user.token)) {
+                localStorage.removeItem('User');
+                dispatch({ type: 'LOGOUT' })
+                navigate('/login');
+                return;
+            }
             dispatch({ type: 'LOGIN', payload: user })
         }
-    }, [])
+        // console.log('location is => ', location)
+    }, [location])
     return (
         <>
             <AppContext.Provider value={{ ...state, dispatch }}>
