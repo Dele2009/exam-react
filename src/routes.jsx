@@ -62,8 +62,8 @@ const AppRoutes = () => {
                         </>
                     )}
 
-                    <Route path='exams' element={<ExamTable />} />
-                    <Route path='exams/create' element={<CreateExam />} />
+                    <Route path='allExams' element={<ExamTable />} />
+                    <Route path='createExam' element={<CreateExam />} />
                     <Route path='profile' element={<Profile/>}/>
                     {/* <Route path='*' element={<Errorpage />} /> */}
 

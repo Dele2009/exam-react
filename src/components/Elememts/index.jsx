@@ -5,6 +5,7 @@ import Tooltip from './Tooltip'
 import Modal from './modal'
 import ToggleSwitch from './toggler'
 import Dropdown from './dropdown'
+import Logo from './logo'
 import {
     LogoLoader,
     Spinner,
@@ -27,6 +28,7 @@ export {
     Modal,
     ToggleSwitch,
     Dropdown,
+    Logo,
     LogoLoader,
     Spinner,
     SpinnerLoader,

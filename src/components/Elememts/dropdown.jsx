@@ -72,3 +72,72 @@ const Dropdown = ({ label, menuItems }) => {
 };
 
 export default Dropdown;
+
+
+
+
+
+
+
+// import { useState, useEffect, useRef } from 'react';
+// import { motion } from 'framer-motion';
+// import { Link } from 'react-router-dom';
+
+// const Dropdown = ({ align = 'right', width = '48', trigger, children }) => {
+//     const [isOpen, setIsOpen] = useState(false);
+//     const dropdownRef = useRef();
+
+//     const toggleDropdown = () => setIsOpen(!isOpen);
+
+//     const handleClickOutside = (event) => {
+//         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+//             setIsOpen(false);
+//         }
+//     };
+
+//     useEffect(() => {
+//         document.addEventListener('mousedown', handleClickOutside);
+//         return () => {
+//             document.removeEventListener('mousedown', handleClickOutside);
+//         };
+//     }, []);
+
+//     const alignmentClasses = {
+//         left: 'origin-top-left left-0',
+//         right: 'origin-top-right right-0',
+//         center: 'origin-top-center left-1/2 transform -translate-x-1/2',
+//     };
+
+//     return (
+//         <div className="relative" ref={dropdownRef}>
+//             <div onClick={toggleDropdown}>
+//                 {trigger}
+//             </div>
+//             {isOpen && (
+//                 <motion.div
+//                     initial={{ opacity: 0, y: -10 }}
+//                     animate={{ opacity: 1, y: 0 }}
+//                     exit={{ opacity: 0, y: -10 }}
+//                     transition={{ duration: 0.3 }}
+//                     className={`absolute z-50 mt-2 w-${width} rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${alignmentClasses[align]}`}
+//                 >
+//                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+//                         {children}
+//                     </div>
+//                 </motion.div>
+//             )}
+//         </div>
+//     );
+// };
+
+// Dropdown.Link = ({ href, onClick, children }) => (
+//     <Link
+//         to={href}
+//         onClick={onClick}
+//         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+//     >
+//         {children}
+//     </Link>
+// );
+
+// export default Dropdown;

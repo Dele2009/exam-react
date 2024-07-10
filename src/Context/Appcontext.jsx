@@ -31,7 +31,7 @@ const AppContextProvider = ({ children }) => {
         const user = JSON.parse(localStorage.getItem('User'))
 
         if (user) {
-            if (isTokenExpired(user.token)) {
+            if (user && isTokenExpired(user.token)) {
                 localStorage.removeItem('User');
                 dispatch({ type: 'LOGOUT' })
                 navigate('/login');
