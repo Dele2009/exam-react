@@ -10,6 +10,7 @@ import Login from './components/pages/introViews/login';
 
 
 import Overview from './components/pages/dashboardViews/overview';
+import Profile from './components/pages/dashboardViews/profile';
 import { AdminForm, StudentForm, TeacherForm } from './components/pages/dashboardViews/UserRegister';
 
 import StudentExam from './components/pages/StudentViews/exam';
@@ -63,6 +64,7 @@ const AppRoutes = () => {
 
                     <Route path='exams' element={<ExamTable />} />
                     <Route path='exams/create' element={<CreateExam />} />
+                    <Route path='profile' element={<Profile/>}/>
                     {/* <Route path='*' element={<Errorpage />} /> */}
 
                 </Route>)

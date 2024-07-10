@@ -16,7 +16,7 @@ const Overview = () => {
         <>
 
             {/* <!-- Put your content inside of the <main/> tag --> */}
-            <h1 className="text-2xl font-black text-gray-800">{`${timeOfDay}, ${user.info.name}!`}</h1>
+            <h1 className="text-2xl font-black text-gray-800">{`${timeOfDay}, ${user.info.firstName}!`}</h1>
             <p className="mb-6 text-gray-600">Here's your overview.</p>
             <div className="flex flex-wrap gap-x-4 gap-y-8">
                 <div className="h-56 w-72 rounded-xl bg-white p-10 shadow-md"></div>

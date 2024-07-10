@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Outlet, Link } from "react-router-dom";
 import { useAuthContent, useLogout } from '../../hooks'
+import { FaUser, FaSlidersH } from 'react-icons/fa'
+import { HiUserCircle, HiLogout } from 'react-icons/hi'; // Import icons as needed
+
+import { Dropdown } from '../Elememts'
 import FemaleAvatar from '../../assets/female_avatar.svg'
 import MaleAvatar from '../../assets/male_avatar.svg'
 
@@ -14,6 +18,12 @@ const Dashboard = () => {
 
     const { user } = useAuthContent()
     const { logout } = useLogout()
+
+    const menuItems = [
+        { label: 'Profile', href: 'profile', icon: HiUserCircle },
+        { label: 'Settings', href: '#', icon: FaSlidersH },
+        { label: 'Logout', href: '#', icon: HiLogout, onClick: logout },
+    ];
 
     return (
         <div className="bg-slate-200 flex h-screen overflow-hidden">
@@ -194,14 +204,14 @@ const Dashboard = () => {
 
                     <div className="my-6 mt-auto ml-10 flex cursor-pointer">
                         <div>
-                            <img 
+                            <img
                                 className="h-12 w-12 rounded-full"
-                                src={user.profilePicture || (user.info.gender === 'Female' ? FemaleAvater : MaleAvatar )} 
-                                alt="Profile" 
+                                src={user.profilePicture || (user.info.gender === 'Female' ? FemaleAvatar : MaleAvatar)}
+                                alt="Profile"
                             />
                         </div>
                         <div className="ml-3">
-                            <p className="font-medium">{user.info.name}</p>
+                            <p className="font-medium">{user.info.firstName}</p>
                             <p className="text-sm text-gray-300">{user.info.email}</p>
                         </div>
                     </div>
@@ -212,8 +222,7 @@ const Dashboard = () => {
             <div className="flex h-full w-full flex-col">
                 {/* <!-- Navbar --> */}
                 <header className="relative flex flex-col items-center bg-white px-4 py-4 shadow sm:flex-row md:h-20">
-                    <div
-                        className="flex w-full flex-col justify-between overflow-hidden transition-all sm:max-h-full sm:flex-row sm:items-center">
+                    <div className="flex w-full flex-col justify-between transition-all sm:max-h-full sm:flex-row sm:items-center">
                         <div className="relative ml-10 flex items-center justify-between rounded-md sm:ml-auto">
                             <svg className="absolute left-2 block h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
                                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
@@ -221,12 +230,15 @@ const Dashboard = () => {
                                 <circle cx="11" cy="11" r="8" className=""></circle>
                                 <line x1="21" y1="21" x2="16.65" y2="16.65" className=""></line>
                             </svg>
-                            <input type="name" name="search"
+                            <input 
+                                type="name" 
+                                name="search"
                                 className="h-12 w-full rounded-md border border-gray-100 bg-gray-100 py-4 pr-4 pl-12 shadow-sm outline-none focus:border-blue-500"
-                                placeholder="Search for anything" />
+                                placeholder="Search for anything" 
+                            />
                         </div>
 
-                        <ul className="mx-auto mt-4 flex space-x-6 sm:mx-5 sm:mt-0">
+                        {/* <ul className="mx-auto mt-4 flex space-x-6 sm:mx-5 sm:mt-0">
                             <li className="">
                                 <a onClick={logout}
                                     className="flex h-8 w-8 items-center justify-center rounded-xl border text-gray-600 hover:text-black hover:shadow">
@@ -259,7 +271,10 @@ const Dashboard = () => {
                                     </svg>
                                 </Link>
                             </li>
-                        </ul>
+                        </ul> */}
+                        {/* <li> */}
+                        <Dropdown label={user.info.firstName} menuItems={menuItems} />
+                        {/* </li> */}
                     </div>
                 </header>
                 {/* <!-- /Navbar --> */}

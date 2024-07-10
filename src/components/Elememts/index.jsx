@@ -4,7 +4,7 @@ import QuestionGrid from './QuestionGrid'
 import Tooltip from './Tooltip'
 import Modal from './modal'
 import ToggleSwitch from './toggler'
-
+import Dropdown from './dropdown'
 import {
     LogoLoader,
     Spinner,
@@ -26,6 +26,7 @@ export {
     Tooltip,
     Modal,
     ToggleSwitch,
+    Dropdown,
     LogoLoader,
     Spinner,
     SpinnerLoader,
