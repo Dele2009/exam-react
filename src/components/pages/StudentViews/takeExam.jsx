@@ -3,9 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../../utilities/axios';
 import { FaArrowLeft, FaArrowRight, FaClock } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { QuestionGrid,SpinningDots } from '../../Elememts';
+import { QuestionGrid, SpinningDots , Modal} from '../../Elememts';
 
-import { useAuthContent} from '../../../hooks'
+import { useAuthContent } from '../../../hooks'
 
 
 
@@ -21,6 +21,7 @@ const TakeExam = () => {
     const [direction, setDirection] = useState(0);
     const [timeLeft, setTimeLeft] = useState(0);
     const [showExamInterface, setShowExamInterface] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false); // State for modal visibility
 
     useEffect(() => {
         const fetchExam = async () => {
@@ -45,7 +46,7 @@ const TakeExam = () => {
 
     const handleSubmit = async () => {
         try {
-            const {data} = await axios.post(`/exam/${id}/submit`, { answers, studentId:user.info._id });
+            const { data } = await axios.post(`/exam/${id}/submit`, { answers, studentId: user.info._id });
             console.log('Submission response:', data);
             navigate(`/results/${data.resultId}`);
         } catch (error) {
@@ -55,7 +56,7 @@ const TakeExam = () => {
 
     useEffect(() => {
         if (timeLeft > 0 && showExamInterface) {
-            if(timeLeft === 0) handleSubmit()
+            if (timeLeft === 0) handleSubmit()
             const timerId = setInterval(() => {
                 setTimeLeft((prevTime) => prevTime - 1);
             }, 1000);
@@ -87,7 +88,7 @@ const TakeExam = () => {
         setCurrentQuestionIndex(index);
     };
 
-    
+
 
     const handleStartExam = () => {
         setShowExamInterface(true);
@@ -242,14 +243,7 @@ const TakeExam = () => {
                         Next <FaArrowRight className="ml-2" />
                     </button>
                 </div>
-                <div className="mt-4">
-                        <button
-                            onClick={handleSubmit}
-                            className="flex items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded disabled:opacity-50 disabled:bg-gray-600"
-                        >
-                            Submit Exam
-                        </button>
-                </div>
+
             </div>
             <div className="bg-gray-100 w-full md:w-4/12 p-6 rounded-lg shadow-md sticky top-3">
                 <div className="flex justify-between mb-4">
@@ -265,7 +259,24 @@ const TakeExam = () => {
                     currentQuestionIndex={currentQuestionIndex}
                     onSelectQuestion={handleSelectQuestion}
                 />
+
+                <div className="mt-5">
+                    <button
+                        onClick={()=> setModalOpen(true)}
+                        className="flex items-center bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded disabled:opacity-50 disabled:bg-gray-600"
+                    >
+                        Submit Exam
+                    </button>
+                </div>
             </div>
+
+            <Modal
+                isOpen={modalOpen}
+                title={'Exam submission request'}
+                content={'You are requested submission of your exam, Do you confirm ?'}
+                onCancel={()=> setModalOpen(false)}
+                onConfirm={handleSubmit}
+            />
         </div>
     );
 };
