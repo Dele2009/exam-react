@@ -9,6 +9,7 @@ import { Dropdown, Logo } from '../Elememts'
 import FemaleAvatar from '../../assets/female_avatar.svg'
 import MaleAvatar from '../../assets/male_avatar.svg'
 
+
 const Dashboard = () => {
     const [isUsersCollapsed, setIsUsersCollapsed] = useState(false);
     const [isExamsCollapsed, setIsExamsCollapsed] = useState(false);
@@ -21,13 +22,13 @@ const Dashboard = () => {
         setIsExamsCollapsed(!isExamsCollapsed);
     };
 
-    const { user } = useAuthContent()
-    const { logout } = useLogout()
+    const { user } = useAuthContent();
+    const { handleModalOpen, LogoutModal } = useLogout();
 
     const menuItems = [
         { label: 'Profile', href: 'profile', icon: HiUserCircle },
         { label: 'Settings', href: '#', icon: FaSlidersH },
-        { label: 'Logout', href: '#', icon: HiLogout, onClick: logout },
+        { label: 'Logout', href: '#', icon: HiLogout, onClick: handleModalOpen, color: 'red' }
     ];
 
     return (
@@ -254,6 +255,7 @@ const Dashboard = () => {
                 </div>
                 {/* <!-- /Main --> */}
             </div>
+            <LogoutModal/>
         </div>
     )
 }

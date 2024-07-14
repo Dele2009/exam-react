@@ -8,7 +8,7 @@ export const Alert = ({ message, error, index, length, onClick }) => {
   // };
 
   // if (visible === false) return null;
-  const time = ((length - index) * 1000) + 4000
+  const time = Number(((length - index) * 1000) + 4000)
   useEffect(() => {
     console.log(time)
     const remove = setTimeout(() => {
@@ -71,7 +71,7 @@ export const Alert = ({ message, error, index, length, onClick }) => {
 
 export const AlertContainer = ({ children }) => {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 fixed z-50 top-5 right-1 max-h-96 overflow-y-auto px-3 md:px-10 py-5">
+    <div style={{zIndex: '999'}} className="flex flex-col items-center justify-center gap-3 fixed top-5 right-1 max-h-96 overflow-y-auto px-3 md:px-10 py-5">
       {children}
     </div>
   )

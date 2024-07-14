@@ -3,59 +3,136 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
-        <title>HTML | Introduction</title>
+        <title>HTML | formatting tags & table</title>
     </head>
     <body>
+        <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. <b>Nesciunt, exercitationem!</b>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, <strong>nostrum quae? Excepturi suscipit ipsum obcaecati.</strong>
+        </p>
 
+        <p>
+            Lorem ipsum dolor sit <i>amet consectetur adipisicing elit.</i> Voluptatem, tempora?
+            <em>Lorem ipsum dolor sit amet.</em>
+        </p>
 
-        <h1>heading 1</h1>
-        <h2>heading 2</h2>
-        <h3>heading 3</h3>
-        <h4>heading 4</h4>
-        <h5>heading 5</h5>
-        <h6>heading 6</h6>
+        <p>
+            price: <del>$2000</del>  $300
+        </p>
 
-        <p>what is your name </p>
+        <p>
+            Lorem, ipsum dolor sit amet <mark>consectetur adipisicing elit. Beatae, et!</mark>
+        </p>
 
-        <ul>
-            <li>Pawpaw</li>
-            <li>orange</li>
-            <li>Apple</li>
-        </ul>
+        <p title="this is a quadratic equation">
+            x <sup>2</sup> + 2x <sup>2</sup> + 3 = 0
+        </p>
 
-        <ol>
-            <li>Cucumber</li>
-            <li>lettuce</li>
-            <li>Carrot</li>
-        </ol>
+        <p>
+            100101 <sub>2</sub>
+        </p>
 
+        <p>
+            2log<sub>3</sub>
+        </p>
+
+        <p>
+            <abbr title="Hyper text markup language">H.T.M.L</abbr>
+        </p>
 
         
+        <h1>
+            <center>
+                Welcome to programming class
+            </center>
+        </h1>
+
+        <center>
+            <img src="src/assets/logo.png" alt=""> <br><br><br><br><br>
+            <img src="src/assets/logo.png" alt="">
+        </center>
+
+        <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab mollitia <br>
+            aliquid excepturi quisquam praesentium quo vel ipsa dolore quidem <br>
+            distinctio atque nostrum possimus accusantium est iusto tenetur nulla <br>
+            eos dolores deserunt quibusdam provident, dolor officiis? Repellat, 
+            esse. Illo, rerum pariatur error, suscipit sequi iste cupiditate deserunt 
+            corporis, optio impedit voluptate.
+        </p>
+        <br><br><br><br><br><br><br>
 
 
 
-        <ol>
-            <li>
-                Schools
-                <ul>
-                    <li>OAU</li>
-                    <li>LAUTECH</li>
-                </ul>
-            </li>
-
-            <li>
-                Cars
-                <ul>
-                    <li>Mercedes benz</li>
-                    <li>lexus</li>
-                </ul>
-            </li>
-        </ol>
 
 
-        <img src="./src/assets/logo.png" alt="This is a company logo" width="60%" height="300">
 
-        <img src="" alt="">
 
+
+        <table border="1" cellspacing="0" cellpadding="20">
+            <thead>
+                <tr>
+                    <td>N/O</td>
+                    <td>NAME</td>
+                    <td>AGE</td>
+                    <td>CLASS</td>
+                    <td>I/Q</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>bola</td>
+                    <td>22</td>
+                    <td>500 level</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Ahmed</td>
+                    <td>28</td>
+                    <td>400 level</td>
+                    <td>150</td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br><br><br>
+        <table border="1" cellspacing="0" cellpadding="20">
+            <thead>
+                <tr>
+                    <td colspan="5">1</td>
+                    <!-- <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>5</td> -->
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>6</td>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td rowspan="3">10</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <!-- <td>15</td> -->
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <!-- <td>20</td> -->
+                </tr>
+            </tbody>
+        </table>
+       
     </body>
 </html>

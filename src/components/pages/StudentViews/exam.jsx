@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ExamCard, LogoLoader, SpinningDots } from '../../Elememts';
+import { ExamCard, SpinningDots } from '../../Elememts';
 import axios from '../../../utilities/axios';
-
+import {useAuthContent} from '../../../hooks'
 const StudentExam = () => {
+    const {user} = useAuthContent()
     const [exams, setExams] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null)
@@ -11,7 +12,7 @@ const StudentExam = () => {
     useEffect(() => {
         const fetchExams = async () => {
             try {
-                const { data } = await axios.get('/exam/get');
+                const { data } = await axios.get('/exam/get', {studentId: user.info._id});
                 setExams(data.Exams);
             } catch (error) {
                 console.error('Error fetching exams:', error);
@@ -29,7 +30,6 @@ const StudentExam = () => {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <SpinningDots />
-                {/* <LogoLoader /> */}
             </div>
         );
     }

@@ -18,7 +18,7 @@ function App() {
 
   
   return (
-    <div className=" mx-auto pb-4">
+    <div className=" mx-auto pb-20">
 
       <Router>
         <AppContextProvider>

@@ -7,7 +7,7 @@ import { Tooltip } from '../Elememts';
 
 
 const NavBar = () => {
-  const { logout } = useLogout();
+  const { handleModalOpen, LogoutModal } = useLogout();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -18,12 +18,12 @@ const NavBar = () => {
     <>
       <nav className="bg-emerald-600 p-4 text-white flex justify-between items-center">
         <div className="flex items-center md:w-full space-x-4">
-          <Link to="/Students" className="text-xl font-bold flex items-center space-x-2">
+          <Link to="/Dashboard" className="text-xl font-bold flex items-center space-x-2">
             <FaUsers />
             <span>SchoolSmarts</span>
           </Link>
           <div className="hidden md:flex space-x-4 mx-10">
-            <Link to="/Students" className="flex items-center space-x-2 hover:text-gray-200">
+            <Link to="/Dashboard" className="flex items-center space-x-2 hover:text-gray-200">
               <FaTachometerAlt />
               <span>Dashboard</span>
             </Link>
@@ -31,7 +31,7 @@ const NavBar = () => {
         </div>
         <div className="flex items-center gap-5">
           <Tooltip text='Profile'>
-            <Link to="" className="flex items-center space-x-2 hover:text-gray-200">
+            <Link to="#" className="flex items-center space-x-2 hover:text-gray-200">
               <FaUserCircle className="w-5 h-5" />
               {/* <span>Profile</span> */}
             </Link>
@@ -49,7 +49,7 @@ const NavBar = () => {
               {/* <span>Notifications</span> */}
             </Link>
           </Tooltip>
-          <button onClick={logout} className="hidden md:inline bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+          <button onClick={handleModalOpen} className="hidden md:inline bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
             Logout
           </button>
           <button onClick={toggleMobileMenu} className='md:hidden'>
@@ -63,13 +63,13 @@ const NavBar = () => {
           className={`transition-transform duration-300 ease-in-out transform md:hidden ${isMobileMenuOpen ? 'translate-y-0 top-14' : '-translate-y-full top-0'
             } bg-emerald-600 p-4 text-white absolute  left-0 right-0 z-50`}
         >
-          <Link to="/Students" className="py-2 flex items-center space-x-2" onClick={toggleMobileMenu}>
+          <Link to="/Dashboard" className="py-2 flex items-center space-x-2" onClick={toggleMobileMenu}>
             <FaTachometerAlt />
             <span>Dashboard</span>
           </Link>
           
           <button
-            onClick={logout}
+            onClick={handleModalOpen}
             className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded w-full mt-2 flex items-center justify-center space-x-2"
           >
             <span>Logout</span>
@@ -84,6 +84,9 @@ const NavBar = () => {
           <Outlet />
         </main>
       </div>
+
+      <LogoutModal/>
+
     </>
   );
 };

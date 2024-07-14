@@ -1,33 +1,26 @@
 import React, { useState, useEffect } from 'react';
-
-import { motion, AnimatePresence } from 'framer-motion';
-import { QuestionGrid } from '../../Elememts';
-import { useParams } from 'react-router-dom';
-import axios from '../../../utilities/axios'
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from '../../../utilities/axios';
 import { FaArrowLeft, FaArrowRight, FaClock } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { QuestionGrid,SpinningDots } from '../../Elememts';
+
+import { useAuthContent} from '../../../hooks'
 
 
-
-import {
-    Spinner,
-    BouncingDots,
-    PulsingCircle,
-    SpinningDots,
-    GrowingBars,
-    RotatingSquare,
-    FadingCircle,
-    SlidingBars,
-} from '../../Elememts'
 
 const TakeExam = () => {
+    const { user } = useAuthContent();
     const { id } = useParams();
+    const navigate = useNavigate();
     const [exam, setExam] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null)
+    const [error, setError] = useState(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [direction, setDirection] = useState(0);
     const [timeLeft, setTimeLeft] = useState(0);
+    const [showExamInterface, setShowExamInterface] = useState(false);
 
     useEffect(() => {
         const fetchExam = async () => {
@@ -39,25 +32,36 @@ const TakeExam = () => {
                 setTimeLeft(totalDuration);
             } catch (err) {
                 console.log('Error fetching', err);
-                setError(err.message)
-            }finally{
-                setTimeout(()=>{
+                // setError(err.message);
+            } finally {
+                setTimeout(() => {
                     setIsLoading(false);
-                },5000)
+                }, 5000);
             }
         };
 
         fetchExam();
     }, [id]);
 
+    const handleSubmit = async () => {
+        try {
+            const {data} = await axios.post(`/exam/${id}/submit`, { answers, studentId:user.info._id });
+            console.log('Submission response:', data);
+            navigate(`/results/${data.resultId}`);
+        } catch (error) {
+            console.error('Error submitting exam:', error);
+        }
+    };
+
     useEffect(() => {
-        if (timeLeft > 0) {
+        if (timeLeft > 0 && showExamInterface) {
+            if(timeLeft === 0) handleSubmit()
             const timerId = setInterval(() => {
                 setTimeLeft((prevTime) => prevTime - 1);
             }, 1000);
             return () => clearInterval(timerId);
         }
-    }, [timeLeft]);
+    }, [timeLeft, showExamInterface]);
 
     const handleAnswerChange = (event) => {
         const updatedAnswers = [...answers];
@@ -83,7 +87,17 @@ const TakeExam = () => {
         setCurrentQuestionIndex(index);
     };
 
-    if (isLoading ) {
+    
+
+    const handleStartExam = () => {
+        setShowExamInterface(true);
+    };
+
+    const handleCancelExam = () => {
+        navigate('/Dashboard'); // Redirect to dashboard or any other page
+    };
+
+    if (isLoading) {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <SpinningDots />
@@ -91,12 +105,12 @@ const TakeExam = () => {
         );
     }
 
-    if(error){
-        return(
+    if (error) {
+        return (
             <div className='w-full h-full flex justify-center items-center'>
-               <h2  className='text-slate-700 font-bold font-sans text-3xl'>Request Timeout, try again</h2>
+                <h2 className='text-slate-700 font-bold font-sans text-3xl'>Request Timeout, try again</h2>
             </div>
-        )
+        );
     }
 
     const formatTime = (seconds) => {
@@ -129,6 +143,38 @@ const TakeExam = () => {
         }),
     };
 
+    if (!showExamInterface) {
+        return (
+            <div className="w-full min-h-screen flex flex-col items-center justify-center px-12">
+                <div className="bg-white p-8 rounded-lg shadow-lg w-full md:w-8/12 lg:w-8/12 mb-6">
+                    <h2 className="text-3xl mb-6 font-bold text-blue-600">Exam Details</h2>
+                    <p className="mb-4"><strong>Title:</strong> {exam.title}</p>
+                    <p className="mb-4"><strong>Subject:</strong> {exam.subject}</p>
+                    <p className="mb-4"><strong>Duration:</strong> {exam.duration?.hours || '00'}h {exam.duration?.minutes || '00'}m</p>
+                    <h2 className="text-3xl mb-6 font-bold text-blue-600">Student Details</h2>
+                    {/* Assuming you have student details available in state or props */}
+                    <p className="mb-4"><strong>Name:</strong> John Doe</p>
+                    <p className="mb-4"><strong>Student ID:</strong> 123456</p>
+                    <div className="flex justify-between">
+                        <button
+                            onClick={handleStartExam}
+                            className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
+                        >
+                            Start Exam
+                        </button>
+                        <button
+                            onClick={handleCancelExam}
+                            className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
+                        >
+                            Cancel Exam
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+
     return (
         <div className="w-full min-h-screen flex flex-col md:flex-row gap-10 items-start justify-between px-12">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full md:w-8/12 lg:w-8/12 mb-6 overflow-hidden">
@@ -153,13 +199,13 @@ const TakeExam = () => {
                         className="mb-14"
                     >
                         {/* {exam.questions[currentQuestionIndex].image && ( */}
-                            <img
-                                src={exam.questions[currentQuestionIndex].image}
-                                alt={`Question ${currentQuestionIndex + 1} Image`}
-                                className={`${exam.questions[currentQuestionIndex].image ? 'block' : 'hidden'} w-full h-3/6 md:w-6/12 md:h-48  my-7 rounded-lg m-auto`}
-                            />
+                        <img
+                            src={exam.questions[currentQuestionIndex].image}
+                            alt={`Question ${currentQuestionIndex + 1} Image`}
+                            className={`${exam.questions[currentQuestionIndex].image ? 'block' : 'hidden'} w-full h-3/6 md:w-6/12 md:h-48  my-7 rounded-lg m-auto`}
+                        />
                         {/* )} */}
-                        
+
                         <h4 className="text-xl font-semibold mb-4 text-gray-700">
                             {exam.questions[currentQuestionIndex].questionText}
                         </h4>
@@ -195,6 +241,14 @@ const TakeExam = () => {
                     >
                         Next <FaArrowRight className="ml-2" />
                     </button>
+                </div>
+                <div className="mt-4">
+                        <button
+                            onClick={handleSubmit}
+                            className="flex items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded disabled:opacity-50 disabled:bg-gray-600"
+                        >
+                            Submit Exam
+                        </button>
                 </div>
             </div>
             <div className="bg-gray-100 w-full md:w-4/12 p-6 rounded-lg shadow-md sticky top-3">

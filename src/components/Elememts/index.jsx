@@ -7,7 +7,7 @@ import ToggleSwitch from './toggler'
 import Dropdown from './dropdown'
 import Logo from './logo'
 import {
-    LogoLoader,
+    LogoPreloader,
     Spinner,
     SpinnerLoader,
     BouncingDots,
@@ -29,7 +29,7 @@ export {
     ToggleSwitch,
     Dropdown,
     Logo,
-    LogoLoader,
+    LogoPreloader,
     Spinner,
     SpinnerLoader,
     BouncingDots,

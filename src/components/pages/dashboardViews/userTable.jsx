@@ -251,7 +251,7 @@ const UserTable = () => {
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex justify-end gap-4">
-                                        <a href="#" onClick={() => handleEdit(user._id)}>
+                                        <a onClick={() => handleEdit(user._id)}>
                                             {/* <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 fill="none"
@@ -269,7 +269,7 @@ const UserTable = () => {
 
                                             <FaPencilAlt className="size-5 text-yellow-500" />
                                         </a>
-                                        <a href="#" onClick={() => handleDelete(user._id)}>
+                                        <a onClick={() => handleDelete(user._id)}>
                                             {/* <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 fill="none"

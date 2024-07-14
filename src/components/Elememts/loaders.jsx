@@ -1,50 +1,40 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-// import Logo from './logo';
+import Logo from './logo';
 
 
 
-export const LogoLoader = () => {
-    const circleVariants = {
-        start: {
-            scale: 0.5,
+export const LogoPreloader = () => {
+    const spinnerVariants = {
+      initial: {
+        rotate: 0,
+      },
+      animate: {
+        rotate: 360,
+        transition: {
+          repeat: Infinity,
+          duration: 2,
+          ease: 'linear',
         },
-        end: {
-            scale: 2,
-            transition: {
-                repeat: Infinity,
-                duration: 1,
-                ease: 'easeInOut',
-            },
-        },
+      },
     };
-
-    const loaderContainer = {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        height: '100vh',
-    };
-
-    const circleStyle = {
-        width: '3rem',
-        height: '3rem',
-        borderRadius: '50%',
-        backgroundColor: '#3498db',
-    };
-
+  
     return (
-        <div style={loaderContainer}>
-            <motion.div
-                style={circleStyle}
-                variants={circleVariants}
-                initial="start"
-                animate="end"
-            />
+      <div className="fixed inset-0 flex items-center justify-center bg-emerald-700 dark:bg-gray-900 z-50">
+        <div className="relative flex items-center justify-center w-28 h-28 rounded-full bg-white">
+          <Logo className="w-4/6 h-4/6" />
+          <motion.div
+            className="absolute inset-0 border-4 border-t-4 border-t-emerald-700 border-emerald-200 rounded-full"
+            variants={spinnerVariants}
+            initial="initial"
+            animate="animate"
+          />
         </div>
+      </div>
     );
-};
+  };
+  
+
 
 export const SpinnerLoader = () => {
     const ringVariants = {
@@ -85,72 +75,6 @@ export const SpinnerLoader = () => {
         </div>
     );
 };
-
-// export const SquareLoader = () => {
-//     const squareVariants = {
-//         rotate: {
-//             rotate: 360,
-//             transition: {
-//                 repeat: Infinity,
-//                 repeatType: "loop",
-//                 duration: 1,
-//                 ease: "linear",
-//             },
-//         },
-//     };
-
-//     const loaderContainer = {
-//         display: 'flex',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         width: '100%',
-//         height: '100vh',
-//     };
-
-//     const squareStyle = {
-//         display: 'block',
-//         width: '2rem',
-//         height: '2rem',
-//         margin: '0.5rem',
-//         backgroundColor: '#3498db',
-//     };
-
-//     return (
-//         <div style={loaderContainer}>
-//             <motion.div
-//                 style={squareStyle}
-//                 variants={squareVariants}
-//                 animate="rotate"
-//             />
-//             <motion.div
-//                 style={squareStyle}
-//                 variants={squareVariants}
-//                 animate="rotate"
-//                 transition={{
-//                     repeat: Infinity,
-//                     repeatType: "loop",
-//                     duration: 1,
-//                     ease: "linear",
-//                     delay: 0.2,
-//                 }}
-//             />
-//             <motion.div
-//                 style={squareStyle}
-//                 variants={squareVariants}
-//                 animate="rotate"
-//                 transition={{
-//                     repeat: Infinity,
-//                     repeatType: "loop",
-//                     duration: 1,
-//                     ease: "linear",
-//                     delay: 0.4,
-//                 }}
-//             />
-//         </div>
-//     );
-// };
-
-
 
 
 export const Spinner = () => {
