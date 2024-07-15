@@ -8,12 +8,10 @@ export const Alert = ({ message, error, index, length, onClick }) => {
   // };
 
   // if (visible === false) return null;
-  const time = Number(((length - index) * 1000) + 4000)
+  const time = ((length - index) * 1000) + 4000
   useEffect(() => {
     console.log(time)
-    const remove = setTimeout(() => {
-      onClick()
-    }, time)
+    const remove = setTimeout(()=>onClick(), time)
 
     return () => {
       clearTimeout(remove)
