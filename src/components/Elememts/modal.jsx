@@ -1,8 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import { SpinnerLoader } from './loaders';
 
-const Modal = ({ isOpen, title, content, onCancel, onConfirm }) => {
+const Modal = ({ 
+    isOpen, 
+    title, 
+    content,
+    isLoading = false, 
+    onCancel, 
+    onConfirm 
+}) => {
     return (
         <>
             {isOpen && (
@@ -13,7 +21,7 @@ const Modal = ({ isOpen, title, content, onCancel, onConfirm }) => {
                     exit={{ opacity: 0 }}
                 >
                     <motion.div
-                        className="relative w-auto max-w-lg mx-auto bg-white rounded-lg shadow-lg"
+                        className="relative w-auto min-w-96 max-w-lg mx-auto bg-white rounded-lg shadow-lg"
                         initial={{ opacity: 0, y: -50 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -50 }}
@@ -31,7 +39,13 @@ const Modal = ({ isOpen, title, content, onCancel, onConfirm }) => {
                         </div>
                         {/* Body */}
                         <div className="p-6">
-                            <p className="my-4 text-blueGray-500 text-lg leading-relaxed">{content}</p>
+                            {isLoading? 
+                              (<SpinnerLoader/>)
+                              :
+                              (<p className="my-4 text-blueGray-500 text-lg leading-relaxed">
+                                {content}
+                              </p>)
+                            }
                         </div>
                         {/* Footer */}
                         <div className="flex items-center justify-end p-6 border-t border-solid rounded-b border-blueGray-200">
@@ -43,8 +57,9 @@ const Modal = ({ isOpen, title, content, onCancel, onConfirm }) => {
                                 Cancel
                             </button>
                             <motion.button
-                                className="bg-green-500 text-white active:bg-green-600 font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
+                                className="bg-green-500 disabled:bg-green-400 text-white active:bg-green-600 font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none"
                                 type="button"
+                                disabled={isLoading}
                                 onClick={onConfirm}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}

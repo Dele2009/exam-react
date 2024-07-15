@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../../utilities/axios';
 import { FaArrowLeft, FaArrowRight, FaClock } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { QuestionGrid, SpinningDots , Modal} from '../../Elememts';
+import { QuestionGrid, SpinningDots , Modal,Alert, AlertContainer} from '../../Elememts';
 
 import { useAuthContent } from '../../../hooks'
 
@@ -15,13 +15,14 @@ const TakeExam = () => {
     const navigate = useNavigate();
     const [exam, setExam] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [errors, setErrors] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [direction, setDirection] = useState(0);
     const [timeLeft, setTimeLeft] = useState(0);
     const [showExamInterface, setShowExamInterface] = useState(false);
     const [modalOpen, setModalOpen] = useState(false); // State for modal visibility
+    const [submitting, setSubmitting] = useState(false)
 
     useEffect(() => {
         const fetchExam = async () => {
@@ -46,11 +47,16 @@ const TakeExam = () => {
 
     const handleSubmit = async () => {
         try {
+            setSubmitting(true)
             const { data } = await axios.post(`/exam/${id}/submit`, { answers, studentId: user.info._id });
             console.log('Submission response:', data);
             navigate(`/results/${data.resultId}`);
         } catch (error) {
+            setErrors((prev) => ([{ message:error.message || 'Error submitting exam, try again' , error: true }, ...prev]))
+
             console.error('Error submitting exam:', error);
+        }finally{
+            setSubmitting(false)
         }
     };
 
@@ -106,13 +112,17 @@ const TakeExam = () => {
         );
     }
 
-    if (error) {
-        return (
-            <div className='w-full h-full flex justify-center items-center'>
-                <h2 className='text-slate-700 font-bold font-sans text-3xl'>Request Timeout, try again</h2>
-            </div>
-        );
+    const removeError = (index)=>{
+        setErrors((prevErrors) => prevErrors.filter((_, i) => i !== index))
     }
+
+    // if (error) {
+    //     return (
+    //         <div className='w-full h-full flex justify-center items-center'>
+    //             <h2 className='text-slate-700 font-bold font-sans text-3xl'>Request Timeout, try again</h2>
+    //         </div>
+    //     );
+    // }
 
     const formatTime = (seconds) => {
         const h = Math.floor(seconds / 3600);
@@ -178,6 +188,13 @@ const TakeExam = () => {
 
     return (
         <div className="w-full min-h-screen flex flex-col md:flex-row gap-10 items-start justify-between px-12">
+             {errors.length > 0 && (
+                <AlertContainer>
+                    {errors.map((error_Obj, index) => (
+                        <Alert {...error_Obj} key={index} index={index} length={errors.length} onClick={() => removeError(index)} />
+                    ))}
+                </AlertContainer>
+            )}
             <div className="bg-white p-8 rounded-lg shadow-lg w-full md:w-8/12 lg:w-8/12 mb-6 overflow-hidden">
                 <h2 className="text-3xl mb-6 font-bold text-blue-600">Take Exam: {exam.title}</h2>
                 <div className="flex items-center justify-between mb-4">
@@ -260,10 +277,10 @@ const TakeExam = () => {
                     onSelectQuestion={handleSelectQuestion}
                 />
 
-                <div className="mt-5">
+                <div className="mt-10">
                     <button
                         onClick={()=> setModalOpen(true)}
-                        className="flex items-center bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded disabled:opacity-50 disabled:bg-gray-600"
+                        className="ml-auto flex items-center bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded disabled:opacity-50 disabled:bg-gray-600"
                     >
                         Submit Exam
                     </button>
@@ -274,6 +291,7 @@ const TakeExam = () => {
                 isOpen={modalOpen}
                 title={'Exam submission request'}
                 content={'You are requested submission of your exam, Do you confirm ?'}
+                isLoading={submitting}
                 onCancel={()=> setModalOpen(false)}
                 onConfirm={handleSubmit}
             />

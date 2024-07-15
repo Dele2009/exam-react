@@ -54,14 +54,14 @@ export const SpinnerLoader = () => {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        height: '100vh',
+        height: '100%',
     };
 
     const ringStyle = {
-        width: '4rem',
-        height: '4rem',
-        border: '0.5rem solid #3498db',
-        borderTop: '0.5rem solid transparent',
+        width: '3rem',
+        height: '3rem',
+        border: '0.2rem solid #059669 ',
+        borderTop: '0.2rem solid transparent',
         borderRadius: '50%',
     };
 
@@ -71,6 +71,7 @@ export const SpinnerLoader = () => {
                 style={ringStyle}
                 variants={ringVariants}
                 animate="animate"
+                className='mx-6 my-4'
             />
         </div>
     );
