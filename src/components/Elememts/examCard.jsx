@@ -7,7 +7,7 @@ const ExamCard = ({ exam }) => {
 
         <div className="bg-white p-6 mb-6 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer">
             <h3 className="text-2xl font-bold text-gray-800">{exam.title}</h3>
-            <div className="flex justify-between items-center mt-6">
+            <div className="flex flex-col md:flex-row justify-between items-center mt-6">
                 <p className="text-gray-600 flex items-center">
                     <FaBook className="mr-2" />
                     {exam.subject}

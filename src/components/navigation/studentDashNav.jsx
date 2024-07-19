@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import { useLogout } from '../../hooks';
+import { useLogout, useAuthContent } from '../../hooks';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
-import { FaBars, FaTimes, FaUserCircle, FaBell, FaTachometerAlt, FaUsers } from 'react-icons/fa';
-import { Tooltip } from '../Elememts';
+import { FaBars, FaTimes, FaUserCircle, FaSlidersH, FaBell, FaTachometerAlt, FaUsers } from 'react-icons/fa';
+import { Tooltip,Dropdown } from '../Elememts';
+import { HiUserCircle, HiLogout } from 'react-icons/hi'; // Import icons as needed
+import FemaleAvatar from '../../assets/female_avatar.svg'
+import MaleAvatar from '../../assets/male_avatar.svg'
 
 
 const NavBar = () => {
+  const { user } = useAuthContent();
   const { handleModalOpen, LogoutModal } = useLogout();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const menuItems = [
+    { label: 'Profile', href: 'profile', icon: HiUserCircle },
+    { label: 'Settings', href: '#', icon: FaSlidersH },
+    { label: 'Logout', href: '#', icon: HiLogout, onClick: handleModalOpen, color: 'red' }
+];
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -29,18 +37,11 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
-        <div className="flex items-center gap-5">
-          <Tooltip text='Profile'>
-            <Link to="#" className="flex items-center space-x-2 hover:text-gray-200">
-              <FaUserCircle className="w-5 h-5" />
-              {/* <span>Profile</span> */}
-            </Link>
-          </Tooltip>
+        <div className="flex items-center gap-1">
           <Tooltip text='Notifications'>
             <Link
               to="#"
               className="flex items-center space-x-2 hover:text-gray-200 relative"
-
             >
               <FaBell className="w-5 h-5" />
               <span className="absolute top-0 -right-3 -mt-3 -mr-7 bg-red-600 border-2 border-white text-white text-xs rounded-full px-2 font-bold">
@@ -49,9 +50,11 @@ const NavBar = () => {
               {/* <span>Notifications</span> */}
             </Link>
           </Tooltip>
-          <button onClick={handleModalOpen} className="hidden md:inline bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+          {/* <button onClick={handleModalOpen} className="hidden md:inline bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
             Logout
-          </button>
+          </button> */}
+          <Dropdown label={user.info.firstName} menuItems={menuItems} />
+
           <button onClick={toggleMobileMenu} className='md:hidden'>
             {isMobileMenuOpen ? <FaTimes className="text-white h-5 w-5" /> : <FaBars className="text-white h-5 w-5" />}
           </button>
@@ -68,12 +71,14 @@ const NavBar = () => {
             <span>Dashboard</span>
           </Link>
           
-          <button
+          {/* <button
             onClick={handleModalOpen}
             className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded w-full mt-2 flex items-center justify-center space-x-2"
           >
             <span>Logout</span>
-          </button>
+          </button> */}
+
+
         </div>
       </nav>
 

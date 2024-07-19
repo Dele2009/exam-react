@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { Link } from "react-router-dom";
 
-const Dropdown = ({ label, menuItems }) => {
+const Dropdown = ({ label, labelImg, menuItems }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
     const controls = useAnimation();
@@ -27,10 +27,22 @@ const Dropdown = ({ label, menuItems }) => {
 
     return (
         <div className="mx-5 relative inline-block" ref={dropdownRef}>
+            {labelImg &&
+                    <div className="relative h-7 w-7">
+                        <img
+                            className="h-full w-full rounded-full object-cover object-center"
+                            src={labelImg} alt={labelImg}
+                        />
+                        <span className={`absolute right-0 bottom-0 h-2 w-2 rounded-full ${user.active ? 'bg-green-400' : 'bg-red-400'} ring ring-white`}></span>
+                    </div>
+                }
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative z-10 flex items-center p-2 text-sm text-gray-600 border-2 border-gray-800 bg-white rounded-md  focus:ring-opacity-40 dark:focus:ring-opacity-40 focus:ring-blue-300 dark:focus:ring-blue-400 focus:ring dark:text-white dark:border-white dark:bg-gray-800 focus:outline-none"
+                className="relative  w-24 md:w-fit z-10 flex items-center p-2 text-sm text-gray-600 border-2 border-gray-800 bg-white rounded-md  focus:ring-opacity-40 dark:focus:ring-opacity-40 focus:ring-blue-300 dark:focus:ring-blue-400 focus:ring dark:text-white dark:border-white dark:bg-gray-800 focus:outline-none"
             >
+                
+
+                {/* <img src={labelImg} alt={labelImg} /> */}
                 <span className="mx-1">{label}</span>
                 <svg className="w-5 h-5 mx-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path

@@ -9,7 +9,7 @@ const Heropage = () => {
 
         <div className="relative">
 
-          <div className="relative  bg-emerald-700 bg-opacity-90  mx-auto overflow-y-auto md:overflow-hidden h-dvh my-auto px-4 py-8 md:py-16 sm:max-w-xl md:max-w-full md:px-24  lg:px-8 lg:py-20 flex items-center">
+          <div className="relative  bg-emerald-700 bg-opacity-90  mx-auto overflow-hidden h-fit md:h-dvh my-auto px-4 py-8 md:py-16 sm:max-w-xl md:max-w-full md:px-24  lg:px-8 lg:py-20 flex items-center">
             <img
               src="https://images.unsplash.com/photo-1576267423445-b2e0074d68a4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
               className="absolute -z-10 inset-0 h-full w-full object-cover"

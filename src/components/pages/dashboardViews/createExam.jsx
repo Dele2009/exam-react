@@ -150,7 +150,7 @@ const CreateExam = () => {
         return;
 
       }
-      if (hours === '0' || !minutes === '00') {
+      if (minutes === '00') {
         setError((prev) => ([...prev, { message: 'Please set exam duration to proceed', error: true }]));
         return;
       }
@@ -175,7 +175,7 @@ const CreateExam = () => {
       return;
 
     }
-    if (hours === '0' || !minutes === '00') {
+    if ( minutes === '00') {
       setError((prev) => ([...prev, { message: 'Please set exam duration to proceed', error: true }]));
       return;
     }
