@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Logo , Dropdown} from "../Elememts";
 import { useAuthContent, useLogout } from "../../hooks";
-import { FaFacebookF, FaSlidersH,  FaTwitter, FaInstagram, FaLinkedinIn, FaGithub, FaDribbble, FaPinterest } from "react-icons/fa";
+import { FaBars,FaTimes,FaFacebookF, FaSlidersH,  FaTwitter, FaInstagram, FaLinkedinIn, FaGithub, FaDribbble, FaPinterest } from "react-icons/fa";
 import { HiUserCircle, HiLogout } from 'react-icons/hi'; // Import icons as needed
 import { motion, useAnimation } from "framer-motion";
 
@@ -16,7 +16,7 @@ const Navbar = () => {
     const containerRef = useRef(null);
     const controls = useAnimation();
     const [scrollY, setScrollY] = useState(0);
-
+    const [menuOpen, setMenuOpen] = useState(false)
     useEffect(() => {
         const handleScroll = () => {
             setScrollY(containerRef.current.scrollTop);
@@ -56,29 +56,17 @@ const Navbar = () => {
                 >
                     <Link
                         to="/"
-                        className="flex items-center whitespace-nowrap text-4xl font-black"
+                        className="flex items-center w-fit whitespace-nowrap text-4xl font-black"
                     >
-                        <Logo className="size-20 sm:size-32" />
+                        <Logo className="size-24 sm:size-32" />
                     </Link>
                     <input type="checkbox" className="peer hidden" id="navbar-open" />
                     <label
-                        className="absolute top-5 right-5 cursor-pointer lg:hidden"
+                        className="absolute top-8 right-5 cursor-pointer lg:hidden"
                         htmlFor="navbar-open"
+                        onClick={()=> setMenuOpen(!menuOpen)}
                     >
-                        <svg
-                            className="h-7 w-7"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="1.5"
-                                d="M4 6h16M4 12h16M4 18h16"
-                            ></path>
-                        </svg>
+                        {menuOpen ? <FaTimes className=" h-7 w-7" /> : <FaBars className=" h-7 w-7" />}
                     </label>
                     <nav
                         aria-label="Header Navigation"

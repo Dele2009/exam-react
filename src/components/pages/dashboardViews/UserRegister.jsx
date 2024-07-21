@@ -164,7 +164,6 @@ export const StudentForm = () => {
                 setStudentFormData(Data)
                 setErrors((prev) => ([...prev, { message, error }]))
                 console.log('student created:', response);
-
             }
         } catch (err) {
             // const {message, error} = err.response.data

@@ -8,11 +8,15 @@ const StudentExam = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null)
 
+    // console.log('exams com', user)
+
 
     useEffect(() => {
         const fetchExams = async () => {
             try {
-                const { data } = await axios.get('/exam/get', {studentId: user.info._id});
+                const { data } = await axios.get('/exam/get', {
+                    params: { student: user.info._id }
+                });
                 setExams(data.Exams);
             } catch (error) {
                 console.error('Error fetching exams:', error);
@@ -52,7 +56,7 @@ const StudentExam = () => {
                         <img src="/assets/empty-state.svg" alt="No exams" className="w-48 h-48" />
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-x-7 gap-y-2 ">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-7 gap-y-2 ">
                         {exams.map((exam, index) => (
                            <ExamCard key={index} exam={exam} />
                         ))}
