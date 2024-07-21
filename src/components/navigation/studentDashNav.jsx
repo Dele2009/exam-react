@@ -3,10 +3,11 @@ import { Link, Outlet } from 'react-router-dom';
 import { useLogout, useAuthContent } from '../../hooks';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { FaBars, FaTimes, FaUserCircle, FaSlidersH, FaBell, FaTachometerAlt, FaUsers } from 'react-icons/fa';
-import { Tooltip,Dropdown } from '../Elememts';
+import { Tooltip,Dropdown, Logo } from '../Elememts';
 import { HiUserCircle, HiLogout } from 'react-icons/hi'; // Import icons as needed
 import FemaleAvatar from '../../assets/female_avatar.svg'
 import MaleAvatar from '../../assets/male_avatar.svg'
+
 
 
 const NavBar = () => {
@@ -24,11 +25,12 @@ const NavBar = () => {
 
   return (
     <>
-      <nav className="bg-emerald-600 p-4 text-white flex justify-between items-center">
-        <div className="flex items-center md:w-full space-x-4">
+      <nav className="bg-emerald-600 p-4 text-white flex justify-between items-center rounded-b-3xl">
+        <div className="flex items-center md:w-full space-x-6">
           <Link to="/Dashboard" className="text-xl font-bold flex items-center space-x-2">
-            <FaUsers />
-            <span>SchoolSmarts</span>
+            {/* <FaUsers />
+            <span>SchoolSmarts</span> */}
+            <Logo className="size-20" />          
           </Link>
           <div className="hidden md:flex space-x-4 mx-10">
             <Link to="/Dashboard" className="flex items-center space-x-2 hover:text-gray-200">

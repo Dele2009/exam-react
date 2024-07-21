@@ -15,6 +15,7 @@ const TakeExam = () => {
     const navigate = useNavigate();
     const [exam, setExam] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [errors, setErrors] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState([]);
@@ -27,14 +28,16 @@ const TakeExam = () => {
     useEffect(() => {
         const fetchExam = async () => {
             try {
-                const { data } = await axios.get(`/exam/${id}`);
+                const { data } = await axios.get(`/exam/${id}`, {
+                    params: {_id: user.info._id}
+                });
                 setExam(data.Exam);
                 setAnswers(Array(data.Exam.questions.length).fill(''));
                 const totalDuration = parseInt(data.Exam.duration.hours) * 3600 + parseInt(data.Exam.duration.minutes) * 60;
                 setTimeLeft(totalDuration);
             } catch (err) {
                 console.log('Error fetching', err);
-                // setError(err.message);
+                setError(`${err.response.data.message}`);
             } finally {
                 setTimeout(() => {
                     setIsLoading(false);
@@ -116,13 +119,16 @@ const TakeExam = () => {
         setErrors((prevErrors) => prevErrors.filter((_, i) => i !== index))
     }
 
-    // if (error) {
-    //     return (
-    //         <div className='w-full h-full flex justify-center items-center'>
-    //             <h2 className='text-slate-700 font-bold font-sans text-3xl'>Request Timeout, try again</h2>
-    //         </div>
-    //     );
-    // }
+    if (error) {
+        return (
+            <div className='w-full h-full flex flex-col justify-center items-center'>
+                <h2 className='text-slate-700 font-bold font-sans text-3xl'>{error}</h2>
+                <a onClick={handleCancelExam} className='underline text-green-700 mt-4 cursor-pointer'>
+                    Back to dashboard
+                </a>
+            </div>
+        );
+    }
 
     const formatTime = (seconds) => {
         const h = Math.floor(seconds / 3600);
@@ -154,7 +160,7 @@ const TakeExam = () => {
         }),
     };
 
-    if (!showExamInterface) {
+    if (!error && !showExamInterface) {
         return (
             <div className="w-full min-h-screen flex flex-col items-center justify-center px-12">
                 <div className="bg-white p-8 rounded-lg shadow-lg w-full md:w-8/12 lg:w-8/12 mb-6">
@@ -166,6 +172,7 @@ const TakeExam = () => {
                     {/* Assuming you have student details available in state or props */}
                     <p className="mb-4"><strong>Name:</strong> John Doe</p>
                     <p className="mb-4"><strong>Student ID:</strong> 123456</p>
+                    
                     <div className="flex justify-between">
                         <button
                             onClick={handleStartExam}
