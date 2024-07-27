@@ -73,7 +73,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div ref={containerRef} className="h-dvh overflow-y-scroll my-10">
+      <div ref={containerRef} className="h-dvh overflow-y-scroll mb-0">
         <motion.header
           animate={controls}
           initial={{
