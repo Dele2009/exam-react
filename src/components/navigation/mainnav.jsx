@@ -88,7 +88,7 @@ const Navbar = () => {
             to="/"
             className="flex items-center w-fit whitespace-nowrap font-black md:h-24"
           >
-            <Logo className="size-24 sm:size-48  pb-4 lg:py-16 md:py-14 md:pb-16" />
+            <Logo className="size-24 sm:size-48 pb-4 lg:py-16 md:py-14 md:pb-16" />
           </Link>
           <input type="checkbox" className="peer hidden" id="navbar-open" />
           <label
