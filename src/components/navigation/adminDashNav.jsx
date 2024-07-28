@@ -46,12 +46,12 @@ const Dashboard = () => {
           id="sidebar-open"
         />
         <label
-          className="peer-checked:rounded-full peer-checked:p-2 peer-checked:right-6 peer-checked:top-6 peer-checked:bg-gray-600 peer-checked:text-white absolute top-8 z-20 mx-4 cursor-pointer"
+          className="peer-checked:rounded-full peer-checked:p-2 peer-checked:right-2 peer-checked:top-6 peer-checked:bg-gray-600 peer-checked:text-white absolute top-8 z-20 mx-4 cursor-pointer"
           htmlFor="sidebar-open"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="h-6 w-6 text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -66,7 +66,7 @@ const Dashboard = () => {
         </label>
         <nav
           aria-label="Sidebar Navigation"
-          className="peer-checked:w-64 peer- left-0 z-10 flex h-screen w-0 flex-col overflow-hidden bg-emerald-700 text-white transition-all md:h-screen"
+          className="peer-checked:w-64 peer-left-0 z-10 flex h-screen w-0 flex-col overflow-hidden bg-emerald-700 text-white transition-all md:h-screen"
         >
           <div className="bg-slate-800 mt-5 py-0 pl-3 md:mt-0">
             {/* <Link to="/" className="">
@@ -86,7 +86,7 @@ const Dashboard = () => {
             <li className="relative">
               <Link
                 to=""
-                className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 text-gray-300 focus:outline-none"
+                className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 text-white focus:outline-none"
               >
                 <span>
                   <svg
@@ -104,14 +104,38 @@ const Dashboard = () => {
                     />
                   </svg>
                 </span>
-                <span className="">Overview</span>
+                <span className="text-xl">Overview</span>
+              </Link>
+            </li>
+            <li className="text-gray-300 hover:bg-slate-600 focus:bg-slate-600 rounded-md">
+              <Link
+                to="users"
+                className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 text-white focus:outline-none"
+              >
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
+                    />
+                  </svg>
+                </span>
+                <span className="ml-2 text-xl">All Users</span>
               </Link>
             </li>
 
             {user && user.role === "Admin" && (
               <li className="relative">
                 <button
-                  className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 font-semibold focus:outline-none"
+                  className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 focus:outline-none"
                   onClick={toggleUsersCollapse}
                 >
                   <span>
@@ -131,7 +155,7 @@ const Dashboard = () => {
                       />
                     </svg>
                   </span>
-                  <span className="">Users</span>
+                  <span className="text-xl">Add User</span>
                 </button>
                 <motion.ul
                   initial={{ height: 0, opacity: 0 }}
@@ -144,30 +168,6 @@ const Dashboard = () => {
                     isUsersCollapsed ? "" : "hidden"
                   }`}
                 >
-                  <li className="text-gray-300 hover:bg-slate-600 focus:bg-slate-600 rounded-md">
-                    <Link
-                      to="users"
-                      className="flex gap-2 items-center justify-start px-4 py-2 ml-2"
-                    >
-                      <span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
-                          />
-                        </svg>
-                      </span>
-                      <span className="ml-2">All Users</span>
-                    </Link>
-                  </li>
                   <li className="text-gray-300 hover:bg-slate-600 focus:bg-slate-600 rounded-md">
                     <Link
                       to="newuser/student"
@@ -247,7 +247,7 @@ const Dashboard = () => {
             {user && user.role === "Admin" && (
               <li className="relative">
                 <button
-                  className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 font-semibold focus:outline-none"
+                  className="focus:bg-slate-600 hover:bg-slate-600 flex w-full space-x-2 rounded-md px-10 py-4 focus:outline-none"
                   onClick={toggleExamsCollapse}
                 >
                   <span>
@@ -266,7 +266,7 @@ const Dashboard = () => {
                       />
                     </svg>
                   </span>
-                  <span className="">Exams</span>
+                  <span className="text-xl">Exams</span>
                 </button>
                 <motion.ul
                   initial={{ height: 0, opacity: 0 }}

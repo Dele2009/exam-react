@@ -43,7 +43,7 @@ const Dropdown = ({ label, labelImg, menuItems }) => {
       )}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative  w-24 md:w-fit z-10 flex items-center p-2 text-sm text-gray-600 border-2 border-gray-800 bg-white rounded-md  focus:ring-opacity-40 dark:focus:ring-opacity-40 focus:ring-blue-300 dark:focus:ring-blue-400 focus:ring dark:text-white dark:border-white dark:bg-gray-800 focus:outline-none"
+        className="relative  w-24 md:w-fit z-10 flex items-center p-3 text-sm text-gray-600 border-2 border-gray-800 bg-white rounded-md  focus:ring-opacity-40 dark:focus:ring-opacity-40 focus:ring-blue-300 dark:focus:ring-blue-400 focus:ring dark:text-white dark:border-white dark:bg-gray-800 focus:outline-none"
       >
         {/* <img src={labelImg} alt={labelImg} /> */}
         <span className="mx-1">{label}</span>

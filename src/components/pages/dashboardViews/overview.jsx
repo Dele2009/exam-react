@@ -150,8 +150,8 @@ const Overview = () => {
 
     return (
         <div className="p-8">
-            <h1 className="text-2xl font-black text-gray-800 mb-4">{`${timeOfDay}, ${user.info.firstName}!`}</h1>
-            <p className="mb-6 text-gray-600">Welcome to your overview dashboard. Here's a snapshot of the recent activity and performance metrics.</p>
+            <h1 className="text-2xl font-black text-white mb-4">{`${timeOfDay}, ${user.info.firstName}!`}</h1>
+            <p className="mb-6 text-gray-300">Welcome to your overview dashboard. Here's a snapshot of the recent activity and performance metrics.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <motion.div className="bg-white rounded-xl shadow-md p-8"
                     initial={{ opacity: 0 }}
